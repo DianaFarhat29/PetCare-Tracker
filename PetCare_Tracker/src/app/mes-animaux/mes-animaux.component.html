@@ -1,0 +1,272 @@
+<main class=" container-fluid my-5 ">
+    <div class="row ">
+
+        <div class="col d-flex mb-5">
+                <!-- Colonne de gauche : Mes animaux -->
+                <div class="row flex-grow-1 mb-5 ">
+                    <h3 class="border-bottom w-50">Mes animaux</h3>
+                    <div class="flex-grow-1 h-100 bg-primary rounded-2 shadow-sm p-4 row d-flex flex-column position-relative">
+                            <!-- Affichage compagnon -->
+                            <div class="d-flex mb-5">
+                                <div class="bg-white shadow-sm mx-2 square rounded-2" style="margin-left:0 !important;">
+                                    <img src="..\assets\images\BBJack2.jpg" alt="Image de l'animal"
+                                        class="w-100 h-100 rounded-2 object-fit-cover">
+                                </div>
+                                <div
+                                    class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
+                                    <div class="d-flex flex-column justify-content-center gap-2">
+                                        <h5 class="m-0">BB Jack</h5>
+                                        <p class="m-0 text-gray-custom">Hamster nain russe</p>
+                                    </div>
+                                    <button class="btn bouton-voir-plus">Détails</button>
+                                </div>
+                            </div>
+
+                            <!-- Affichage compagnon -->
+                            <div class="d-flex mb-5">
+                                <div class="bg-white shadow-sm mx-2 square rounded-2" style="margin-left:0 !important;">
+                                    <img src="..\assets\images\Sky.jpg" alt="Image de l'animal"
+                                        class="w-100 h-100 rounded-2 object-fit-cover">
+                                </div>
+                                <div
+                                    class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
+                                    <div class="d-flex flex-column justify-content-center gap-2">
+                                        <h5 class="m-0">Sky</h5>
+                                        <p class="m-0 text-gray-custom">Péruche hondulée (origine américaine)</p>
+                                    </div>
+                                    <button class="btn bouton-voir-plus">Détails</button>
+                                </div>
+                            </div>
+
+                            <!-- Affichage compagnon -->
+                            <div class="d-flex">
+                                <div class="bg-white shadow-sm mx-2 square rounded-2" style="margin-left:0 !important;">
+                                    <img src="..\assets\images\Micky2.jpg" alt="Image de l'animal"
+                                        class="w-100 h-100 rounded-2 object-fit-cover">
+                                </div>
+                                <div
+                                    class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
+                                    <div class="d-flex flex-column justify-content-center gap-2">
+                                        <h5 class="m-0">Micky</h5>
+                                        <p class="m-0 text-gray-custom">Péruche hondulée (origine australienne)</p>
+                                    </div>
+                                    <button class="btn bouton-voir-plus">Détails</button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn bouton-voir-plus m-auto mb-4 bouton-ajouter-compagnon position-absolute bottom-0">Ajouter un compagnon</button>
+                        </div>
+                    </div>
+        </div>
+
+        <!-- Colonne de droite : fiche détaillée -->
+        <div class="col w-50 h-100 ms-5">
+            <h3 class="border-bottom w-50">Fiche détaillée</h3>
+            <div class="row h-75 mb-5 bg-primary rounded-2 shadow-sm">
+                <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
+                    <div class="d-flex flex-column gap-4">
+                        <div class="d-flex flex-row">
+                            <div class="bg-white shadow-sm mx-2 big-square rounded-2">
+                                <img src="..\assets\images\BBJack2.jpg" alt="Image de l'animal"
+                                    class="w-100 h-100 rounded-2 object-fit-cover">
+                            </div>
+                            <div
+                                class="bg-white flex-grow-1 rounded-2 shadow-sm p-4 align-items-center justify-content-between col">
+                                <div class="d-flex flex-column justify-content-center gap-3">
+                                    <h5 class="m-0 text-center pb-2">BB Jack</h5>
+                                    <p class="m-0 text-gray-custom"><span class="fw-semibold text-black">Race:
+                                        </span>Hamster nain russe</p>
+
+                                    <p class="m-0 text-gray-custom"><span class="fw-semibold text-black">Sexe:
+                                        </span>Mâle
+                                    </p>
+                                    <p class="m-0 text-gray-custom"><span class="fw-semibold text-black">Âge: </span>9
+                                        mois (né le 20 avril 2023)</p>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="bg-white rounded-2 shadow-sm p-4">
+                            <div class="d-flex flex-column justify-content-center gap-3">
+                                <h5 class="m-0 text-center pb-2 m-2">Fiche santé</h5>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <div class="d-flex flex-column gap-3">
+
+
+                                        <div class="row align-items-center">
+                                            <label for="animal-concerne"
+                                                class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Poids:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="poids" class="form-control" placeholder="52 g"
+                                                    disabled>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="row align-items-center">
+                                            <label for="animal-concerne"
+                                                class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Taille:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="taille" class="form-control" placeholder="5 cm"
+                                                    disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column gap-3">
+
+
+                                        <div class="row align-items-center">
+                                            <label for="animal-concerne"
+                                                class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Condition:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="condition-physique" class="form-control"
+                                                    placeholder="Léger surpoids" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="row align-items-center">
+
+                                            <label for="date-heure"
+                                                class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Dernière
+                                                visite: </label>
+                                            <div class="col-sm-8">
+                                                <input type="date-local" id="dernière
+                                                        -visite
+                                                        -medicale:" class="form-control" placeholder="2023-12-14"
+                                                    disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="m-0 text-gray-custom"><span class="fw-semibold text-black">Notes: </span>
+                                </p>
+                                <textarea class="form-control bg-light fixed-size-textarea" rows="5"
+                                    placeholder="Entrez vos notes ici..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-row gap-2 w-100 pt-2">
+                            <button class="btn bouton-voir-plus  flex-grow-1 ">Modifier</button>
+                            <button class="btn bouton-voir-plus flex-grow-1 ">Sauvegarder</button>
+                            <button class="btn bouton-voir-plus  flex-grow-1 ">Supprimer</button>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Section rendez-vous -->
+    <div class="row ">
+        <h3 class="border-bottom w-50">Ajout/Visualisation d'évènements</h3>
+        <div class="bg-primary shadow-sm rounded-2 w-100">
+            <div class="row justify-content-center p-4">
+                <!-- Section ajout de rendez-vous -->
+                <div class="col-sm bg-white rounded-2 shadow-sm p-4 d-flex me-5" style="min-height: 200px;">
+                    <div class="d-flex flex-column justify-content-center gap-3 w-100">
+                        <div class="row gap-3">
+                            <!-- Colonne pour les champs 'Animal concerné' et 'Date et heure' -->
+                            <div class="col">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="row align-items-center">
+                                        <label for="animal-concerne"
+                                            class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Animal:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="animal-concerne" class="form-control"
+                                                placeholder="Animal concerné">
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-center">
+                                        <label for="date-heure"
+                                            class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Date et
+                                            heure:</label>
+                                        <div class="col-sm-8">
+                                            <input type="datetime-local" id="date-heure" class="form-control"
+                                                placeholder="Date et heure du rendez-vous">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Colonne pour les champs 'Type' et 'Lieu' -->
+                            <div class="col">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="row align-items-center">
+                                        <label for="type"
+                                            class="col-sm-4 col-form-label fw-semibold text-black">Type:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="type" class="form-control"
+                                                placeholder="Type de rendez-vous">
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-center">
+                                        <label for="lieu"
+                                            class="col-sm-4 col-form-label fw-semibold text-black">Lieu:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="lieu" class="form-control"
+                                                placeholder="Lieu du rendez-vous">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Champ pour 'Notes' -->
+                        <div class="d-flex flex-column gap-2">
+                            <label for="notes" class="fw-semibold text-black">Notes:</label>
+                            <textarea id="notes" class="form-control bg-light fixed-size-textarea" rows="3"
+                                placeholder="Entrez la raison ici..."></textarea>
+                        </div>
+
+                        <button class="btn bouton-voir-plus flex-grow-1">Ajouter le rendez-vous</button>
+                    </div>
+                </div>
+
+                <!-- Section affichage des rendez-vous -->
+                <div class="col-sm bg-white rounded-2 shadow-sm p-4 ms-5" style="min-height: 200px;">
+
+                    <h5 class="m-0">Rendez-vous de BB Jack:</h5>
+                    <div class="h-100 w-100 rounded-2 p-4 d-flex flex-column gap-3">
+                        <!-- Affichage évènement -->
+                        <div class="bg-white rounded-2 shadow-sm d-flex align-items-center p-3 gap-2 w-100">
+                            <!-- Colonne pour l'image -->
+                            <div class="col-auto">
+                                <img src="..\assets\images\horloge.png" width="40" height="auto" />
+                            </div>
+
+                            <!-- Colonne pour le texte -->
+                            <div class="flex-grow-1 p-0 ">
+                                <!-- Utilisez flex-grow-1 pour que cette div prenne l'espace restant -->
+                                <p class="mb-1 fw-semi-bold">Rendez-vous au vétérinaire - 31 janvier 2024</p>
+                            </div>
+
+                            <!-- Colonne pour l'icône de suppression avec ms-auto pour pousser à droite -->
+                            <div class="ms-auto">
+                                <a href="">
+                                    <img src="..\assets\images\supprimer.png" width="40" height="auto" />
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>

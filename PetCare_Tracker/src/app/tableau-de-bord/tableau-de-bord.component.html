@@ -1,0 +1,117 @@
+<main class=" container-fluid my-5 ">
+  <div class="row ">
+      <!-- Colonne de gauche -->
+      <div class="col">
+        <div class="row d-flex flex-column">
+           <!-- Mes animaux -->
+        <div class="row h-75 mb-5 ">
+        <h3 class="border-bottom w-50">Mes animaux</h3>
+        <div class="bg-primary h-75 w-100 rounded-2 shadow-sm p-4 gap-2 ">
+          <!-- Affichage compagnon -->
+          <div class="d-flex mb-5">
+            <div class="bg-white shadow-sm mx-2 square rounded-2">
+              <img src="..\assets\images\BBJack2.jpg" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
+            </div>
+            <div class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
+              <div class="d-flex flex-column justify-content-center gap-2">
+                <h5 class="m-0">BB Jack</h5>
+                <p class="m-0 text-gray-custom">Hamster nain russe</p>
+              </div>
+              <button class="btn bouton-voir-plus">Voir plus</button>
+            </div>
+          </div>
+
+          <!-- Affichage compagnon -->
+          <div class="d-flex mb-5">
+            <div class="bg-white shadow-sm mx-2 square rounded-2">
+              <img src="..\assets\images\Sky.jpg" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
+            </div>
+           <div class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
+              <div class="d-flex flex-column justify-content-center gap-2">
+                <h5 class="m-0">Sky</h5>
+                <p class="m-0 text-gray-custom">Péruche hondulée (origine américaine)</p>
+              </div>
+              <button class="btn bouton-voir-plus">Voir plus</button>
+            </div>
+          </div>
+
+          <!-- Affichage compagnon -->
+          <div class="d-flex">
+            <div class="bg-white shadow-sm mx-2 square rounded-2">
+              <img src="..\assets\images\Micky2.jpg" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
+            </div>
+           <div class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
+              <div class="d-flex flex-column justify-content-center gap-2">
+                <h5 class="m-0">Micky</h5>
+                <p class="m-0 text-gray-custom">Péruche hondulée (origine australienne)</p>
+              </div>
+              <button class="btn bouton-voir-plus">Voir plus</button>
+            </div>
+          </div>
+        </div>
+        </div>
+
+            <!-- Conseils du jour -->
+        <div class="row h-25">
+        <h3 class="border-bottom w-50">Conseils du jour</h3>
+        <div class="bg-primary h-100 w-100 d-flex p-4 shadow-sm rounded-2 flex-column align-items-center justify-content-between">
+          <div class="bg-white h-100 w-75 rounded-2 shadow-sm text-center p-3 mb-4">
+            <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
+            <p class="p-4 m-0">Vérifiez toujours que votre animal a accès à de l'eau fraîche et propre, surtout pendant
+              les jours chauds.</p>
+          </div>
+          <div> o o o </div>
+           <!-- <div class="bg-white h-auto d-inline-block w-25 rounded-2 shadow-sm text-center p-4">
+            <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
+            <p class="pt-2 m-0">Un contrôle régulier chez le vétérinaire est essentiel pour maintenir la santé et le
+              bien-être de votre animal.</p>
+          </div>
+          <div class="bg-white h-auto d-inline-block w-25 rounded-2 shadow-sm text-center p-4">
+            <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
+            <p class="pt-2 m-0">L'exercice quotidien est crucial pour le bien-être physique et mental de votre animal
+              (adapté à son âge et sa condition physique). </p>
+          </div>-->
+        </div> 
+        </div>
+      </div>
+    </div>
+
+      <!-- Colonne de droite -->
+      <div class="col">
+        <div class="row d-flex flex-column h-100">
+          <!-- À venir -->
+          <div class="row mb-5">
+            <h3 class="border-bottom w-50">À venir</h3>
+            <div class="bg-primary h-75 w-100 rounded-2 shadow-sm">
+              <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
+                <!-- Affichage évènement -->
+                <div class="bg-white rounded-2 row w-100 d-flex gap-1 align-items-center p-3">
+                  <!-- Colonne pour l'image -->
+                  <div class="col-auto">
+                    <img src="..\assets\images\horloge.png" width="40" height="auto" />
+                  </div>
+
+                  <!-- Colonne pour le texte -->
+                  <div class="col p-0">
+                    <p class="mb-1 fw-semi-bold">Rendez-vous au vétérinaire - 31 janvier 2024</p>
+                    <p class="m-0"><span class="text-gray-custom">Compagnon concerné: </span><span
+                        class="fw-semi-bold">Sky</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendrier -->
+          <div class="row d-flex flex-column flex-grow-1">
+            <h3 class="border-bottom w-50">Calendrier</h3>
+            <div class="bg-primary w-100 rounded-2 p-4 shadow-sm d-flex flex-grow-1 justify-content-center">
+              <div class="bg-white rounded-2 shadow-sm w-100 d-flex justify-content-center flex-grow-1">
+                <full-calendar [options]="calendarOptions"></full-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
