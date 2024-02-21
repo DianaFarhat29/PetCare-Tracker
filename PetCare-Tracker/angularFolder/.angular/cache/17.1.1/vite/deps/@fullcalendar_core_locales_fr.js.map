@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../node_modules/@fullcalendar/core/locales/fr.js"],
+  "sourcesContent": ["var l31 = {\n    code: 'fr',\n    week: {\n        dow: 1,\n        doy: 4, // The week that contains Jan 4th is the first week of the year.\n    },\n    buttonText: {\n        prev: 'Précédent',\n        next: 'Suivant',\n        today: 'Aujourd\\'hui',\n        year: 'Année',\n        month: 'Mois',\n        week: 'Semaine',\n        day: 'Jour',\n        list: 'Planning',\n    },\n    weekText: 'Sem.',\n    weekTextLong: 'Semaine',\n    allDayText: 'Toute la journée',\n    moreLinkText: 'en plus',\n    noEventsText: 'Aucun évènement à afficher',\n};\n\nexport { l31 as default };\n"],
+  "mappings": ";;;AAAA,IAAI,MAAM;AAAA,EACN,MAAM;AAAA,EACN,MAAM;AAAA,IACF,KAAK;AAAA,IACL,KAAK;AAAA;AAAA,EACT;AAAA,EACA,YAAY;AAAA,IACR,MAAM;AAAA,IACN,MAAM;AAAA,IACN,OAAO;AAAA,IACP,MAAM;AAAA,IACN,OAAO;AAAA,IACP,MAAM;AAAA,IACN,KAAK;AAAA,IACL,MAAM;AAAA,EACV;AAAA,EACA,UAAU;AAAA,EACV,cAAc;AAAA,EACd,YAAY;AAAA,EACZ,cAAc;AAAA,EACd,cAAc;AAClB;",
+  "names": []
+}
