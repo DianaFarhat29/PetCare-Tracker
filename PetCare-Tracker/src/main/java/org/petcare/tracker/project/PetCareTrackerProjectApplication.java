@@ -10,6 +10,7 @@ import org.petcare.tracker.project.Repositories.AnimalRepository;
 import org.petcare.tracker.project.Repositories.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.boot.SpringApplication;
@@ -55,7 +56,7 @@ public class PetCareTrackerProjectApplication {
     }
 
     @Bean
-    CommandLineRunner initAnimals(AnimalRepository animalRepository, OwnerRepository ownerRepository) {
+    CommandLineRunner initAnimals(OwnerRepository ownerRepository) {
         // log.info("METHODE initAnimals");
 
         Owner owner = new Owner(1L, "Diana", "Farhat", "Diana.farhat@outlook.com", new HashSet<>());

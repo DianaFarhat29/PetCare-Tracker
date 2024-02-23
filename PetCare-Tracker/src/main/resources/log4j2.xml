@@ -9,11 +9,11 @@
         </File>
     </Appenders>
     <Loggers>
-        <Root level="debug">
-            <AppenderRef ref="ConsoleAppender" />
-            <AppenderRef ref="FileAppender"/>
+        <Root level="INFO">
         </Root>
-
         <Logger name="org.hibernate" level="INFO" />
+        <Logger name="org.hibernate.engine" level="INFO" />
+        <Logger name="org.hibernate.type" level="INFO" />
+        <Logger name="org.hibernate.engine.jdbc" level="INFO" />
     </Loggers>
 </Configuration>

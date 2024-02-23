@@ -36,14 +36,14 @@ export class TableauDeBordComponent implements OnInit{
 
   animals: Animal[] | undefined;
 
-  constructor(private animalService: AnimalService) { }
+  constructor(private animalService: AnimalService, private http: HttpClient) {}
 
   ngOnInit() {
     const userId = 1; // Pour l'instant en dur
-    this.animalService.findAll(userId).subscribe(data => {
+    const url = 'http://localhost:8080/api/user/' + userId;
+    this.animalService.findAll(url).subscribe(data => {
       this.animals = data;
     });
   }
 
 }
-

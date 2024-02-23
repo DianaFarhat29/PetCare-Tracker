@@ -6,89 +6,78 @@
                 <div class="row flex-grow-1 mb-5 ">
                     <h3 class="border-bottom w-50">Mes animaux</h3>
                     <div class="flex-grow-1 h-100 bg-primary rounded-2 shadow-sm p-4 row d-flex flex-column position-relative">
-                            <!-- Affichage compagnon -->
-                            <div class="d-flex mb-5">
-                                <div class="bg-white shadow-sm mx-2 square rounded-2" style="margin-left:0 !important;">
-                                    <img src="..\assets\images\BBJack2.jpg" alt="Image de l'animal"
-                                        class="w-100 h-100 rounded-2 object-fit-cover">
-                                </div>
-                                <div
-                                    class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
-                                    <div class="d-flex flex-column justify-content-center gap-2">
-                                        <h5 class="m-0">BB Jack</h5>
-                                        <p class="m-0 text-gray-custom">Hamster nain russe</p>
-                                    </div>
-                                    <button class="btn bouton-voir-plus">Détails</button>
-                                </div>
-                            </div>
 
                             <!-- Affichage compagnon -->
-                            <div class="d-flex mb-5">
-                                <div class="bg-white shadow-sm mx-2 square rounded-2" style="margin-left:0 !important;">
-                                    <img src="..\assets\images\Sky.jpg" alt="Image de l'animal"
-                                        class="w-100 h-100 rounded-2 object-fit-cover">
-                                </div>
-                                <div
-                                    class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
-                                    <div class="d-flex flex-column justify-content-center gap-2">
-                                        <h5 class="m-0">Sky</h5>
-                                        <p class="m-0 text-gray-custom">Péruche hondulée (origine américaine)</p>
-                                    </div>
-                                    <button class="btn bouton-voir-plus">Détails</button>
-                                </div>
-                            </div>
+                        <div class="d-flex mb-5" *ngFor="let animal of animals">
+                          <div class="bg-white shadow-sm mx-2 square rounded-2">
+                            <img [src]="animal.picture" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
+                          </div>
 
-                            <!-- Affichage compagnon -->
-                            <div class="d-flex">
-                                <div class="bg-white shadow-sm mx-2 square rounded-2" style="margin-left:0 !important;">
-                                    <img src="..\assets\images\Micky2.jpg" alt="Image de l'animal"
-                                        class="w-100 h-100 rounded-2 object-fit-cover">
-                                </div>
-                                <div
-                                    class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
-                                    <div class="d-flex flex-column justify-content-center gap-2">
-                                        <h5 class="m-0">Micky</h5>
-                                        <p class="m-0 text-gray-custom">Péruche hondulée (origine australienne)</p>
-                                    </div>
-                                    <button class="btn bouton-voir-plus">Détails</button>
-                                </div>
+                          <div class="bg-white flex-grow-1 rounded-2 shadow-sm d-flex px-4 align-items-center justify-content-between col">
+                            <div class="d-flex flex-column justify-content-center gap-2">
+                              <h5 class="m-0">{{ animal.name }}</h5>
+                              <p class="m-0 text-gray-custom">{{ animal.race }}</p>
                             </div>
-
-                            <button class="btn bouton-voir-plus m-auto mb-4 bouton-ajouter-compagnon position-absolute bottom-0">Ajouter un compagnon</button>
+                            <button class="btn bouton-voir-plus" (click)="showAnimalDetails(animal)">Détails</button>
+                          </div>
+                        </div>
+                            <button class="btn bouton-voir-plus m-auto mb-4 bouton-ajouter-compagnon position-absolute bottom-0" (click)="clearInputsAndEnable()">Ajouter un compagnon</button>
                         </div>
                     </div>
         </div>
 
         <!-- Colonne de droite : fiche détaillée -->
-        <div class="col w-50 h-100 ms-5">
+        <div class="col w-50 h-100 ms-5" *ngIf="selectedAnimal">
             <h3 class="border-bottom w-50">Fiche détaillée</h3>
             <div class="row h-75 mb-5 bg-primary rounded-2 shadow-sm">
                 <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
+
+                  <!--------------------------------- FORM --------------------------------->
+                  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
                     <div class="d-flex flex-column gap-4">
+
                         <div class="d-flex flex-row">
                             <div class="bg-white shadow-sm mx-2 big-square rounded-2">
-                                <img src="..\assets\images\BBJack2.jpg" alt="Image de l'animal"
-                                    class="w-100 h-100 rounded-2 object-fit-cover">
+                              <img [src]="selectedAnimal?.picture ? selectedAnimal.picture : '../assets/images/patte.png'" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
+
                             </div>
                             <div
                                 class="bg-white flex-grow-1 rounded-2 shadow-sm p-4 align-items-center justify-content-between col">
                                 <div class="d-flex flex-column justify-content-center gap-3">
 
                                   <div class="row align-items-center">
-                                    <label for="nom"
-                                           class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Nom:</label>
-                                    <div class="col-sm-8">
-                                      <input type="text" id="nom" class="form-control" placeholder="BB Jack"
-                                             disabled>
+                                    <label for="name" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Nom:</label>
+                                    <div class="col-sm-8 ">
+                                      <input type="text" id="name" class="form-control" placeholder="" formControlName="name" [value]="selectedAnimal?.name"
+                                             [disabled]="!isAddingAnimal">
                                     </div>
                                   </div>
 
                                   <div class="row align-items-center">
-                                    <label for="sexe"
-                                           class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Sexe:</label>
+                                    <label for="race" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Race:</label>
                                     <div class="col-sm-8">
-                                      <input type="text" id="sexe" class="form-control" placeholder="Mâle"
-                                             disabled>
+                                      <input type="text" id="race" class="form-control" placeholder="" formControlName="race" [value]="selectedAnimal?.race"
+                                             [disabled]="!isAddingAnimal">
+                                    </div>
+                                  </div>
+
+                                  <div class="row align-items-center">
+                                    <label for="gender" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Sexe:</label>
+                                    <div class="col-sm-8">
+                                      <select id="gender" class="form-select" formControlName="gender" [value]="selectedAnimal.gender" [disabled]="!isAddingAnimal" >
+                                        <option value="" disabled selected>Veuillez sélectionner le sexe</option>
+                                        <option value="Male">Mâle</option>
+                                        <option value="Female">Femelle</option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="row align-items-center">
+                                    <label for="birthday"
+                                           class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Date de naissance:</label>
+                                    <div class="col-sm-8">
+                                      <input type="date" id="birthday" class="form-control" placeholder="" formControlName="birthday" [value]="selectedAnimal?.birthday"
+                                             [disabled]="!isAddingAnimal">
                                     </div>
                                   </div>
 
@@ -96,7 +85,7 @@
                                     <label for="age"
                                            class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Age:</label>
                                     <div class="col-sm-8">
-                                      <input type="text" id="age" class="form-control" placeholder="9 mois (né le 20 avril)"
+                                      <input type="text" id="age" class="form-control" placeholder="" [value]="calculateAge(selectedAnimal?.birthday)"
                                              disabled>
                                     </div>
                                   </div>
@@ -104,7 +93,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                         <div class="bg-white rounded-2 shadow-sm p-4">
                             <div class="d-flex flex-column justify-content-center gap-3">
@@ -114,22 +102,22 @@
 
 
                                         <div class="row align-items-center">
-                                            <label for="animal-concerne"
+                                            <label for="weight"
                                                 class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Poids:</label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="poids" class="form-control" placeholder="52 g"
-                                                    disabled>
+                                                <input type="text" id="weight" class="form-control" placeholder="" formControlName="weight" [value]="selectedAnimal?.weight"
+                                                       [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>
 
 
 
                                         <div class="row align-items-center">
-                                            <label for="animal-concerne"
+                                            <label for="size"
                                                 class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Taille:</label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="taille" class="form-control" placeholder="5 cm"
-                                                    disabled>
+                                                <input type="text" id="size" class="form-control" placeholder="" formControlName="size" [value]="selectedAnimal?.height"
+                                                       [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>
                                     </div>
@@ -137,45 +125,43 @@
 
 
                                         <div class="row align-items-center">
-                                            <label for="animal-concerne"
+                                            <label for="healthCondition"
                                                 class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Condition:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="condition-physique" class="form-control"
-                                                    placeholder="Léger surpoids" disabled>
+                                                <input type="text" id="healthCondition" class="form-control"
+                                                    placeholder="" formControlName="healthCondition" [value]="selectedAnimal?.healthCondition" [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>
 
                                         <div class="row align-items-center">
 
-                                            <label for="date-heure"
+                                            <label for="lastVisit"
                                                 class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Dernière
                                                 visite: </label>
                                             <div class="col-sm-8">
-                                                <input type="date-local" id="dernière
-                                                        -visite
-                                                        -medicale:" class="form-control" placeholder="2023-12-14"
-                                                    disabled>
+                                                <input type="date" id="lastVisit" class="form-control" placeholder="" formControlName="lastVisit" [value]="selectedAnimal?.lastVisit"
+                                                       [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="m-0 text-gray-custom"><span class="fw-semibold text-black">Notes: </span>
-                                </p>
-                                <textarea class="form-control bg-light fixed-size-textarea" rows="5"
+                              <label for="notes"
+                                     class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Notes: </label>
+                                <textarea class="form-control bg-light fixed-size-textarea" rows="5" formControlName="notes" [value]="selectedAnimal?.notes" [disabled]="!isAddingAnimal"
                                     placeholder="Entrez vos notes ici..."></textarea>
                             </div>
                         </div>
 
                         <div class="d-flex flex-row gap-2 w-100 pt-2">
                             <button class="btn bouton-voir-plus  flex-grow-1 ">Modifier</button>
-                            <button class="btn bouton-voir-plus flex-grow-1 ">Sauvegarder</button>
+                            <button class="btn bouton-voir-plus flex-grow-1 " type="submit">Sauvegarder</button>
                             <button class="btn bouton-voir-plus  flex-grow-1 ">Supprimer</button>
                         </div>
 
 
                     </div>
-
+                  </form>
 
 
 

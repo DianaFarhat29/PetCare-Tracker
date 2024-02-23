@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @SessionAttributes("userId")
 @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
 @RestController
-@RequestMapping("/api/animals")
+@RequestMapping("/api")
 public class AnimalController {
 
     private static final String SESSION_USER_ID = "userId";
@@ -41,8 +41,11 @@ public class AnimalController {
     @Autowired
     private OwnerRepository ownerRepository;
 
+
     @GetMapping("/user/{userId}")
+    @ResponseBody
     public List<Animal> getAnimalsByUserId(@PathVariable Long userId, HttpSession session) {
+        log.info("getAnimalsByUserId called with userId: " + userId);
         if (session.getAttribute(SESSION_USER_ID) == null) {
             session.setAttribute(SESSION_USER_ID, 1L);
         }
@@ -54,6 +57,7 @@ public class AnimalController {
             // Handle case if no owner is found
             return Collections.emptyList();
         }
+
     }
 
     @GetMapping("/animals")
@@ -61,6 +65,7 @@ public class AnimalController {
         return (List<Animal>) animalRepository.findAll();
     }
 
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
     @PostMapping("/animals")
     @Transactional
     public ResponseEntity<Animal> addAnimal(@RequestBody Animal animal, @RequestParam List<Long> ownerId) {

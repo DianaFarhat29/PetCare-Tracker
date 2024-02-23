@@ -1,5 +1,7 @@
 package org.petcare.tracker.project.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,6 +24,7 @@ public class Animal {
             joinColumns = @JoinColumn(name = "animal_id"),
             inverseJoinColumns = @JoinColumn(name = "owner_id")
     )
+    @JsonManagedReference
     private Set<Owner> owners = new HashSet<>();
     @Column(nullable = false)
     private String name;

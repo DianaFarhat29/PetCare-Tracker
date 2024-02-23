@@ -7,4 +7,6 @@ export const routes: Routes = [
     {path: '', component:TableauDeBordComponent},
     {path: 'tableau-de-bord', component:TableauDeBordComponent},
     {path:'mes-animaux', component:MesAnimauxComponent},
+
+
 ];
