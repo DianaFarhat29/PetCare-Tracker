@@ -22,4 +22,6 @@ public class OwnerImplementation implements OwnerService {
         return ownerRepository.findById(id);
     }
 
+
+
 }

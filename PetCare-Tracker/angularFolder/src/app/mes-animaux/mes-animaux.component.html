@@ -64,8 +64,8 @@
                                   <div class="row align-items-center">
                                     <label for="gender" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Sexe:</label>
                                     <div class="col-sm-8">
-                                      <select id="gender" class="form-select" formControlName="gender" [value]="selectedAnimal.gender" [disabled]="!isAddingAnimal" >
-                                        <option value="" disabled selected>Veuillez sélectionner le sexe</option>
+                                      <select id="gender" class="form-select" formControlName="gender" [value]="selectedAnimal?.gender" [disabled]="!isAddingAnimal" >
+                                        <option value="" selected>Veuillez sélectionner le sexe</option>
                                         <option value="Male">Mâle</option>
                                         <option value="Female">Femelle</option>
                                       </select>
@@ -113,10 +113,10 @@
 
 
                                         <div class="row align-items-center">
-                                            <label for="size"
+                                            <label for="height"
                                                 class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Taille:</label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="size" class="form-control" placeholder="" formControlName="size" [value]="selectedAnimal?.height"
+                                                <input type="text" id="height" class="form-control" placeholder="" formControlName="height" [value]="selectedAnimal?.height"
                                                        [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>

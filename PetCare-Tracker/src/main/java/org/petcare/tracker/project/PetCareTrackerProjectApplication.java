@@ -55,6 +55,7 @@ public class PetCareTrackerProjectApplication {
 
     }
 
+
     @Bean
     CommandLineRunner initAnimals(OwnerRepository ownerRepository) {
         // log.info("METHODE initAnimals");

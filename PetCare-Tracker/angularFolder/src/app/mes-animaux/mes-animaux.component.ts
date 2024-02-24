@@ -4,7 +4,7 @@ import {Animal} from "../animal";
 import {AnimalService} from "../services/animal-service";
 import {HttpClient} from "@angular/common/http";
 import { AnimalModel } from '../animal-model';
-import {FormsModule, FormBuilder, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @Component({
@@ -13,7 +13,6 @@ import {FormsModule, FormBuilder, ReactiveFormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     FormsModule,
-    FormBuilder,
     ReactiveFormsModule
   ],
   templateUrl: './mes-animaux.component.html',
@@ -31,7 +30,7 @@ export class MesAnimauxComponent implements OnInit{
   selectedAnimal: AnimalModel | undefined;
   selectedOwnerId: number | undefined;
   errors: { [fieldName: string]: string } = {};
-  private formBuilder: any;
+
 
 
   constructor(private animalService: AnimalService, private http: HttpClient, private formBuilder: FormBuilder) {}
@@ -49,7 +48,6 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   calculateAge(birthday: Date | undefined): string {
-    console.log('Birthday:', birthday, typeof birthday);
     if (!birthday || birthday.getFullYear() === 1900) {
       return "Age Inconnu";
     }
@@ -115,48 +113,82 @@ export class MesAnimauxComponent implements OnInit{
     const numberRegex = /^[0-9]+$/;
     const maxNotesLength = 500;
 
-    console.log('name:', animal.name);
-    console.log('nameRegex test result:', nameRegex.test(animal.name));
 
-    console.log('race:', animal.race);
+    let valueName = this.checkoutForm.value.name;
+    let valueRace = this.checkoutForm.value.race;
+    let valueGender = this.checkoutForm.value.gender;
+    let valueBirthday = this.checkoutForm.value.birthday;
+    let valueWeight = this.checkoutForm.value.weight;
+    let valueHeight = this.checkoutForm.value.height;
+    let valueHealthCondition = this.checkoutForm.value.healthCondition;
+    let valueLastVisit = this.checkoutForm.value.lastVisit;
+    let valueNotes = this.checkoutForm.value.notes;
+
+    console.log('name:', this.checkoutForm.value.name);
+    if (typeof valueName === "string") {
+      console.log('nameRegex test result:', nameRegex.test(valueName));
+    }
+
+    console.log('race:', this.checkoutForm.value.race);
     console.log('raceRegex test result:', raceRegex.test(animal.race));
+
+    console.log('gender:', this.checkoutForm.value.gender);
+    console.log('raceRegex test result:', raceRegex.test(animal.gender));
 
     if (!conditionRegex.test(animal.healthCondition)) {
       this.errors['healthCondition'] = 'La condition de santé est obligatoire.';
     }
 
-    if (animal.name.length == 0) {
-      (this.errors)['name'] = 'Le nom est obligatoire.';
-    } else if (!nameRegex.test(animal.name)) {
-      (this.errors)['name'] = 'Le nom doit être au moins 2 caractères alphabétiques.';
-    }
-
-    if (animal.name.length == 0) {
-      (this.errors)['race'] = 'La race est obligatoire.';
-    } else if (!raceRegex.test(animal.race)) {
-      (this.errors)['race'] = 'La race doit être au moins 2 caractères alphabétiques.';
-    }
-
-    if (!animal.gender) {
-      this.errors['gender'] = 'Veuillez sélectionner le sexe';
-    }
-
-    if (animal.birthday) {
-      const formattedBirthday = animal.birthday.toISOString().slice(0, 10);
-      if (!birthdayRegex.test(formattedBirthday)) {
-        this.errors['birthday'] = 'Veuillez entrer une date valide au format YYYY-MM-DD.';
+    if (typeof valueName === "string") {
+      if (valueName.length == 0) {
+        (this.errors)['name'] = 'Le nom est obligatoire.';
+      } else if (!nameRegex.test(valueName)) {
+        (this.errors)['name'] = 'Le nom doit être au moins 2 caractères alphabétiques.';
       }
     }
 
-    if (animal.weight && !numberRegex.test(animal.weight.toString())) {
+    if (typeof valueRace === "string") {
+      if (valueRace.length == 0) {
+        (this.errors)['race'] = 'La race est obligatoire.';
+      } else if (!raceRegex.test(valueRace)) {
+        (this.errors)['race'] = 'La race doit être au moins 2 caractères alphabétiques.';
+      }
+    }
+
+    if (typeof valueGender === "string") {
+    if (!valueGender) {
+      this.errors['gender'] = 'Veuillez sélectionner le sexe';
+    }
+    }
+
+    if (valueBirthday) {
+     /* const formattedBirthday = valueBirthday.toISOString().slice(0, 10);
+      if (!birthdayRegex.test(formattedBirthday)) {
+        this.errors['birthday'] = 'Veuillez entrer une date valide au format YYYY-MM-DD.';
+      }*/
+      console.log('birthday:', valueBirthday);
+    }
+
+    if (valueWeight && !numberRegex.test(valueWeight.toString())) {
       this.errors['weight'] = 'Le poids doit être un nombre positif.';
     }
 
-    if (animal.height && !numberRegex.test(animal.height.toString())) {
+    if (valueHeight && !numberRegex.test(valueHeight.toString())) {
       this.errors['height'] = 'La taille doit être un nombre positif.';
     }
 
-    if (animal.notes && animal.notes.length > maxNotesLength) {
+    if (valueHealthCondition &&!conditionRegex.test(valueHealthCondition)) {
+      this.errors['healthCondition'] = 'La condition de santé est obligatoire.';
+    }
+
+    /*if (valueLastVisit) {
+      const formattedBirthday = valueLastVisit.toISOString().slice(0, 10);
+      if (!birthdayRegex.test(formattedBirthday)) {
+        this.errors['birthday'] = 'Veuillez entrer une date valide au format YYYY-MM-DD.';
+      }
+    }*/
+
+    if (valueNotes && valueNotes.length > maxNotesLength) {
       this.errors['notes'] = `Les notes ne peuvent pas dépasser ${maxNotesLength} charactères.`;
     }
 
@@ -171,11 +203,13 @@ export class MesAnimauxComponent implements OnInit{
       this.animalService.save(this.selectedAnimal as Animal, this.selectedOwnerId).subscribe(() => {
         alert('Animal ajouté avec succès!');
         this.clearInputsAndEnable();
+        this.checkoutForm.reset();
       }, error => {
         console.error('Error saving animal:', error);
         alert('Erreur lors de l\'ajout de l\'animal. Veuillez réessayer.');
       });
     } else {
+      console.warn('Your order has been submitted', this.checkoutForm.value);
       let errorMessage = 'Données de l\'animal invalides. Veuillez corriger les erreurs suivantes:\n';
       for (const field in validationResult.errors) {
       errorMessage += `- ${field}: ${validationResult.errors[field]}\n`;
