@@ -5,6 +5,7 @@ import {AnimalService} from "../services/animal-service";
 import {HttpClient} from "@angular/common/http";
 import { AnimalModel } from '../animal-model';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 
 
 @Component({
@@ -13,7 +14,9 @@ import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './mes-animaux.component.html',
   styleUrl: './mes-animaux.component.css',
@@ -33,7 +36,9 @@ export class MesAnimauxComponent implements OnInit{
 
 
 
-  constructor(private animalService: AnimalService, private http: HttpClient, private formBuilder: FormBuilder) {}
+  constructor(private animalService: AnimalService,
+              private http: HttpClient,
+              private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     const userId = 1; // Pour l'instant en dur

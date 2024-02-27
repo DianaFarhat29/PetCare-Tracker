@@ -1,0 +1,26 @@
+.modal-footer .btn-close {
+    background-color: white;
+    border-color: #33D4DE !important;
+    color: #686868;
+    width: 150px;
+}
+
+.modal-footer .btn-close:hover {
+    background-color: darkgrey;
+    color: white;
+}
+
+.modal-footer .btn-compte {
+    background-color: #33D4DE;
+    color: white;
+    width: 150px;
+}
+
+.modal-footer .btn-compte:hover {
+    background-color: #686868;
+    color: white;
+}
+.close {
+    color:#33D4DE;
+    opacity: 1;
+}

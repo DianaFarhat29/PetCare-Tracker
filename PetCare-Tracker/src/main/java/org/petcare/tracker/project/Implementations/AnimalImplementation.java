@@ -23,7 +23,7 @@ public class AnimalImplementation implements AnimalService {
         return animalRepository.findByOwners_Id(ownerId);
     }
 
-    // Implementation for saving doctor information
+    // Implementation for saving animal information
     @Override
     public Animal saveAnimal(Animal animal) {
         return animalRepository.save(animal);

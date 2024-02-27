@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@angular/cli": "^17.2.0-rc.0",
-    "global": "^4.4.0"
+    "global": "^4.4.0",
+    "mdb-angular-ui-kit": "^6.0.0"
   }
 }

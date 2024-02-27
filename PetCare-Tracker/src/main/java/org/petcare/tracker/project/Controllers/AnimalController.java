@@ -62,6 +62,7 @@ public class AnimalController {
 
     @GetMapping("/animals")
     public List<Animal> getAnimals() {
+
         return (List<Animal>) animalRepository.findAll();
     }
 

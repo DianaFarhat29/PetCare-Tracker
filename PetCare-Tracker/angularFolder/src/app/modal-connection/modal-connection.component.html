@@ -1,0 +1,32 @@
+<div class="modal-content">
+
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Se connecter</h5>
+    <button type="button" class="close" aria-label="Close" (click)="close()">X</button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Formulaire de connection au compte -->
+    <form [formGroup]="userFormGroup" (ngSubmit)="onSubmit()">
+
+      <!-- Champs du formulaire -->
+      <div class="form-group">
+        <label for="email"></label>
+        <input type="email" class="form-control" id="email" placeholder="Votre adresse courriel"
+          formControlName="email">
+        <label for="password"></label>
+        <input type="password" class="form-control" id="password" placeholder="Votre mot de passe"
+          formControlName="password">
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()"> Fermer </button>
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+      </div>
+
+    </form>
+  </div>
+
+
+
+</div>

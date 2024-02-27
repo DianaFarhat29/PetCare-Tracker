@@ -12,6 +12,6 @@ public interface AnimalService {
     // Method to get animal with owner id
     List<Animal> getAnimalWithOwnerId(Long ownerId);
 
-    // Method to Save or update a doctor's information
+    // Method to Save or update an animal's information
     Animal saveAnimal(Animal animal);
 }

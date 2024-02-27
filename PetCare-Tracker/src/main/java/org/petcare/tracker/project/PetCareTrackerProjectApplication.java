@@ -60,7 +60,7 @@ public class PetCareTrackerProjectApplication {
     CommandLineRunner initAnimals(OwnerRepository ownerRepository) {
         // log.info("METHODE initAnimals");
 
-        Owner owner = new Owner(1L, "Diana", "Farhat", "Diana.farhat@outlook.com", new HashSet<>());
+        Owner owner = new Owner(1L, "Diana", "Farhat", "Diana.farhat@outlook.com", "514-555-1234", "Pass123Word!", "Admin", new HashSet<>());
         ownerRepository.save(owner);
 
         return args -> {

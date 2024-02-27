@@ -1,0 +1,37 @@
+<div class="container">
+  <h2>Liste des Utilisateurs</h2>
+  <!-- Ajout d'un clic d'événement pour ouvrir un formulaire/modal d'ajout d'utilisateur -->
+
+  <button type="button" class="btn btn-compte m-2" routerLink="/add-owner" routerLinkActive="active" aria-current="page">Ajouter un utilisateur</button>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Email</th>
+      <th>No. Téléphone</th>
+      <th>Rôle</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let owner of owners">
+      <td>{{ owner.id }}</td>
+      <td>{{ owner.lastName }}</td>
+      <td>{{ owner.firstName }}</td>
+      <td>{{ owner.email }}</td>
+      <td>{{ owner.noTel }}</td>
+      <td>{{ owner.role }}</td>
+
+      <td>
+
+        <button *ngIf="owner.id !== undefined && owner.id !== null" (click)="deleteOwner(owner.id)">Supprimer</button>
+
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
