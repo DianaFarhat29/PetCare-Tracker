@@ -1,6 +1,8 @@
 package org.petcare.tracker.project.Controllers;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.petcare.tracker.project.PetCareTrackerProjectApplication;
 import org.petcare.tracker.project.Repositories.OwnerRepository;
 import org.petcare.tracker.project.Services.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +17,19 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @SessionAttributes("userId")
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/owners")
-
-
 public class OwnerController {
 
     @Autowired
     private OwnerRepository ownerRepository;
     private final OwnerService ownerService;
+
+    static Logger log = Logger.getLogger(PetCareTrackerProjectApplication.class.getName());
 
     @Autowired
     public OwnerController(OwnerService ownerService) {
@@ -35,21 +38,22 @@ public class OwnerController {
 
 
     // Get all owners
-    @GetMapping()
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    @Transactional
+    @RequestMapping(value = "/findAll", produces = "application/json")
     public List<Owner> getAllOwners() {
         return ownerRepository.findAll();
     }
 
 
     //Create a new owner
-    @PostMapping(value = "/create", consumes = {"application/xml","application/json"})
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    @Transactional
+    @PostMapping(value = "/create", produces = "application/json")
     public Owner createOwner(@RequestBody Owner owner){
+        log.info("Received owner data: " + owner);
         return ownerRepository.save(owner);
     }
-
-
-
-
 
 
     @PutMapping

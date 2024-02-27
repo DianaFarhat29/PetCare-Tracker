@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {map, Observable, tap} from 'rxjs';
 import {OwnerModel} from '../owner-model';
 import {Owner} from "../owner";
 
@@ -9,13 +9,16 @@ import {Owner} from "../owner";
 })
 export class OwnerService {
 
-  private apiUrl= 'http://localhost:8080/api/owners';
+  private apiUrl= 'http://localhost:8080/api/owners/findAll';
 
   constructor(private httpClient: HttpClient,) {}
 
 
   getOwners(): Observable<Owner[]> {
-    return this.httpClient.get<Owner[]>(this.apiUrl);
+    return this.httpClient.get<Owner[]>(this.apiUrl)
+      .pipe(
+        tap(data => console.log('Fetched owners:', data)) // Log for inspection
+      );
   }
 
 

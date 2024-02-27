@@ -26,9 +26,12 @@ export class UserAddEditComponent implements OnInit {
 
   constructor(private ownerService: OwnerService,) { }
 
-
   ngOnInit() {
-    this.getOwners();
+    this.ownerService.getOwners().subscribe(data => {
+      this.owners = data;
+    }, error => { // Add error handling
+      console.error('Error fetching owners:', error);
+    });
   }
 
   private getOwners() {
@@ -36,8 +39,6 @@ export class UserAddEditComponent implements OnInit {
       this.owners = data;
     });
   }
-
-
 
   deleteOwner(id: number): void {
     this.ownerService.deleteOwner(id).subscribe(() => {

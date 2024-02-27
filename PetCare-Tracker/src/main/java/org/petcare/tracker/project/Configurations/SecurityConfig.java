@@ -24,12 +24,19 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+
+                        /*
                         .requestMatchers("/api/animals").authenticated()
                         .requestMatchers("/api/animals/*").authenticated()
+                        .requestMatchers("/api/owners").authenticated()
+                        .requestMatchers("/api/owners/*").authenticated()
+                        */
+
                         .requestMatchers(HttpMethod.GET,"/api/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/**").permitAll()
                         .anyRequest().permitAll()
+
                 );
 
         return http.build();

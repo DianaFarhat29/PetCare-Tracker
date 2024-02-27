@@ -60,7 +60,9 @@ public class AnimalController {
 
     }
 
-    @GetMapping("/animals")
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    @Transactional
+    @GetMapping("/animalsList")
     public List<Animal> getAnimals() {
 
         return (List<Animal>) animalRepository.findAll();
