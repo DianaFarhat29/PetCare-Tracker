@@ -60,16 +60,18 @@ public class PetCareTrackerProjectApplication {
     CommandLineRunner initAnimals(OwnerRepository ownerRepository) {
         // log.info("METHODE initAnimals");
 
-        Owner owner = new Owner(1L, "Diana", "Farhat", "Diana.farhat@outlook.com", new HashSet<>());
-        ownerRepository.save(owner);
+        Owner owner1 = new Owner(1L, "Sami", "Farhat", "Sami@outlook.com", "514-585-1234", "Pass123Word!", "Owner", new HashSet<>());
+        Owner owner2 = new Owner(2L, "Diana", "Farhat", "Diana.farhat@outlook.com", "514-555-1234", "Pass123Word!", "Admin", new HashSet<>());
+        ownerRepository.save(owner1);
+        ownerRepository.save(owner2);
 
         return args -> {
 
             Stream.of(
-                    new Animal( null, Collections.singleton(owner), "Fluffy", "Siamese", "Female", LocalDate.of(2020, 2, 15), 3.5, 25.0, null, null, "Likes tuna treats", null),
-                    new Animal(null, Collections.singleton(owner), "Max", "Golden Retriever", "Male", LocalDate.of(2018, 8, 4), 35.0, 60.0, "Allergies", LocalDate.of(2023, 11, 20), null, null),
-                    new Animal(null, Collections.singleton(owner), "Daisy", "Poodle", "Female", LocalDate.of(2022, 5, 29), 6.0, 30.0, null, LocalDate.of(2024, 1, 12), "Recently groomed", null)
-            ).forEach(animal -> animalController.addAnimal(animal, List.of(1L)));
+                    new Animal( null, Collections.singleton(owner2), "Fluffy", "Siamese", "Female", LocalDate.of(2020, 2, 15), 3.5, 25.0, null, null, "Likes tuna treats", null),
+                    new Animal(null, Collections.singleton(owner2), "Max", "Golden Retriever", "Male", LocalDate.of(2018, 8, 4), 35.0, 60.0, "Allergies", LocalDate.of(2023, 11, 20), null, null),
+                    new Animal(null, Collections.singleton(owner2), "Daisy", "Poodle", "Female", LocalDate.of(2022, 5, 29), 6.0, 30.0, null, LocalDate.of(2024, 1, 12), "Recently groomed", null)
+            ).forEach(animal -> animalController.addAnimal(animal, List.of(2L)));
         };
     }
 

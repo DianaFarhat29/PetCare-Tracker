@@ -2,9 +2,12 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import {CommonModule, NgForOf} from "@angular/common";
 import {Animal} from "../animal";
 import {AnimalService} from "../services/animal-service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { AnimalModel } from '../animal-model';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {OwnerService} from "../services/owner-service";
+import {Appointment} from "../appointment";
+import {OwnerModel} from "../owner-model";
 
 
 @Component({
@@ -30,21 +33,53 @@ export class MesAnimauxComponent implements OnInit{
   selectedAnimal: AnimalModel | undefined;
   selectedOwnerId: number | undefined;
   errors: { [fieldName: string]: string } = {};
+  private currentUserEmail: any;
+  private ownerId: number | undefined;
+  public tempAppointments: Appointment[] = [];
 
 
 
-  constructor(private animalService: AnimalService, private http: HttpClient, private formBuilder: FormBuilder) {}
+  constructor(private animalService: AnimalService, private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    const userId = 1; // Pour l'instant en dur
+    const userId = 2; // Pour l'instant en dur
     const url = 'http://localhost:8080/api/user/' + userId;
     this.animalService.findAll(url).subscribe(data => {
       this.animals = data;
+
+      if (data.length > 0) {
+        const ownerId = userId;  // Get the owner ID
+        this.ownerService.getOwnerById(ownerId).subscribe(owner => {
+          localStorage.setItem('currentUserEmail', owner.email);
+          this.currentUserEmail = owner.email;
+          this.ownerId = ownerId;
+          console.log('currentUserEmail:', owner.email)
+        });
+      }
+
+      this.http.get<Appointment[]>(`http://localhost:8080/api/owners/${userId}/appointments`)
+        .subscribe(appointments => {
+          this.tempAppointments = appointments;
+        });
+
+
     });
   }
 
   showAnimalDetails(animal: Animal) {
     this.selectedAnimal = animal;
+  }
+
+  get appointments(): Appointment[] | undefined {
+    return this.tempAppointments;
+  }
+
+  getAppointmentsForAnimal(animalId: number): Appointment[] {
+    return this.tempAppointments.filter(appointment => appointment.animal.id === animalId);
+  }
+
+  hasAnyAppointments(): boolean {
+    return this.tempAppointments.some(appointment => appointment.animal);
   }
 
   calculateAge(birthday: Date | undefined): string {
@@ -75,8 +110,8 @@ export class MesAnimauxComponent implements OnInit{
     this.selectedAnimal = { ...{
         id: 0,
         owner: 0,
-        name: "ND",
-        race: "ND",
+        name: "",
+        race: "",
         gender: "",
         birthday: new Date(1900, 0, 1),
         weight: 0,
@@ -91,16 +126,24 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   checkoutForm = this.formBuilder.group({
-    name: "ND",
-    race: "ND",
-    gender: "",
-    birthday: new Date(1900, 0, 1),
-    weight: 0,
-    height: 0,
-    healthCondition: "",
-    lastVisit: new Date(0),
-    notes: "",
-    picture: "",
+    // Animal checkoutForm
+    name: ['', Validators.required],
+    race: ['', Validators.required],
+    gender: ['', Validators.required],
+    birthday: ['', Validators.required],
+    weight: ['', Validators.required],
+    height: ['', Validators.required],
+    healthCondition: ['', Validators.required],
+    lastVisit: ['', Validators.required],
+    notes: ['', Validators.required],
+    picture: ['', Validators.required],
+
+    // Appointment checkoutForm
+    concernedAnimal: ['', Validators.required],
+    appointmentDateTime: ['', Validators.required],
+    appointmentType: ['', Validators.required],
+    appointmentLocation: ['', Validators.required],
+    appointmentNotes: ['', Validators.required],
   });
 
 
@@ -195,29 +238,90 @@ export class MesAnimauxComponent implements OnInit{
     return { isValid: Object.keys(this.errors).length === 0, errors: this.errors };
   }
 
-  // Hypothetical function to interact with backend - replace with actual logic
+  //  Method to add an animal to the owner
   onSubmit() {
     const validationResult = this.validateAnimal(this.selectedAnimal as Animal);
 
-    if (this.validateAnimal(this.selectedAnimal as Animal) && this.selectedOwnerId) {
-      this.animalService.save(this.selectedAnimal as Animal, this.selectedOwnerId).subscribe(() => {
-        alert('Animal ajouté avec succès!');
-        this.clearInputsAndEnable();
-        this.checkoutForm.reset();
+    // Gather appointment data from the form
+    const animalData = {
+      name: this.checkoutForm.value['name'],
+      race: this.checkoutForm.value['race'],
+      gender: this.checkoutForm.value['gender'],
+      birthday: this.checkoutForm.value['birthday'],
+      weight: this.checkoutForm.value['weight'],
+      height: this.checkoutForm.value['height'],
+      healthCondition: this.checkoutForm.value['healthCondition'],
+      lastVisit: this.checkoutForm.value['lastVisit'],
+      notes: this.checkoutForm.value['notes'],
+      picture: this.checkoutForm.value['picture'],
+    };
+
+    console.log('ownerId: ' + this.ownerId);
+
+    this.http.post('http://localhost:8080/api/owners/addAnimal', animalData, this.currentUserEmail )
+      .subscribe(
+
+        response => {
+          // Handle successful appointment creation
+          console.log('Animal created successfully:', response);
+          alert('Animal ajouté avec succès!');
+          this.checkoutForm.reset();
+        },
+        error => {
+          // Handle errors during appointment creation
+          console.error('Error creating animal:', animalData, error);
+          alert('Erreur lors de l\'ajout de l\'animal. Veuillez réessayer.');
+        }
+      );
+  }
+
+  onSubmitAppointment() {
+
+    // Gather appointment data from the form
+    const appointmentData = {
+      animalId: this.checkoutForm.value['concernedAnimal'],
+      appointmentDateTime: this.checkoutForm.value['appointmentDateTime'],
+      appointmentNotes: this.checkoutForm.value['appointmentNotes'],
+      appointmentType: this.checkoutForm.value['appointmentType'],
+      appointmentLocation: this.checkoutForm.value['appointmentLocation'],
+      emailOwner: this.currentUserEmail
+    };
+
+    this.http.post('http://localhost:8080/api/owners/bookAppointment', appointmentData)
+      .subscribe(
+
+        response => {
+          // Handle successful appointment creation
+          console.log('Appointment created successfully:', response);
+          alert('Rendez-vous enregistré avec succès!');
+          this.checkoutForm.reset();
+        },
+        error => {
+          // Handle errors during appointment creation
+          console.error('Error creating appointment:', appointmentData, error);
+          alert('Erreur lors de l\'enregistrement de rendez-vous. Veuillez réessayer.');
+        }
+      );
+  }
+
+  deleteAppointment(appointmentId: number) {
+    console.log('Deleting appointment with id:'+ appointmentId);
+    console.log(`http://localhost:8080/api/owners/cancelAppointment/${appointmentId}`);
+    this.http.delete(`http://localhost:8080/api/owners/cancelAppointment/${appointmentId}`)
+      .subscribe(
+
+        response => {
+          // Handle successful appointment deletion
+          // Remove the appointment from the tempAppointments array
+          this.tempAppointments = this.tempAppointments.filter(a => a.id !== appointmentId);
+          console.log('Appointment deleted successfully:', response);
+          alert('Rendez-vous supprimé avec succès!');
+
       }, error => {
-        console.error('Error saving animal:', error);
-        alert('Erreur lors de l\'ajout de l\'animal. Veuillez réessayer.');
+        // Handle the error
+        console.error('Error deleting appointment:', error);
+        alert('Erreur lors de la suppression du rendez-vous. Veuillez réessayer.');
       });
-    } else {
-      console.warn('Your order has been submitted', this.checkoutForm.value);
-      let errorMessage = 'Données de l\'animal invalides. Veuillez corriger les erreurs suivantes:\n';
-      for (const field in validationResult.errors) {
-      errorMessage += `- ${field}: ${validationResult.errors[field]}\n`;
-    }
-    alert(errorMessage);
-    }
-}
-
-
+  }
 
 }

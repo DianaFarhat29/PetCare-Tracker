@@ -5,10 +5,10 @@
                 <!-- Colonne de gauche : Mes animaux -->
                 <div class="row flex-grow-1 mb-5 ">
                     <h3 class="border-bottom w-50">Mes animaux</h3>
-                    <div class="flex-grow-1 h-100 bg-primary rounded-2 shadow-sm p-4 row d-flex flex-column position-relative">
+                    <div class="h-100 bg-primary rounded-2 shadow-sm p-4 position-relative list-animals-2">
 
                             <!-- Affichage compagnon -->
-                        <div class="d-flex mb-5" *ngFor="let animal of animals">
+                        <div class="d-flex " *ngFor="let animal of animals">
                           <div class="bg-white shadow-sm mx-2 square rounded-2">
                             <img [src]="animal.picture" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
                           </div>
@@ -27,7 +27,7 @@
         </div>
 
         <!-- Colonne de droite : fiche détaillée -->
-        <div class="col w-50 h-100 ms-5" *ngIf="selectedAnimal">
+        <div class="col w-50 h-100 ms-5" >
             <h3 class="border-bottom w-50">Fiche détaillée</h3>
             <div class="row h-75 mb-5 bg-primary rounded-2 shadow-sm">
                 <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
@@ -38,7 +38,7 @@
 
                         <div class="d-flex flex-row">
                             <div class="bg-white shadow-sm mx-2 big-square rounded-2">
-                              <img [src]="selectedAnimal?.picture ? selectedAnimal.picture : '../assets/images/patte.png'" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
+                              <img [src]="selectedAnimal?.picture ? selectedAnimal?.picture : '../assets/images/patte.png'" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
 
                             </div>
                             <div
@@ -72,23 +72,6 @@
                                     </div>
                                   </div>
 
-                                  <div class="row align-items-center">
-                                    <label for="birthday"
-                                           class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Date de naissance:</label>
-                                    <div class="col-sm-8">
-                                      <input type="date" id="birthday" class="form-control" placeholder="" formControlName="birthday" [value]="selectedAnimal?.birthday"
-                                             [disabled]="!isAddingAnimal">
-                                    </div>
-                                  </div>
-
-                                  <div class="row align-items-center">
-                                    <label for="age"
-                                           class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Age:</label>
-                                    <div class="col-sm-8">
-                                      <input type="text" id="age" class="form-control" placeholder="" [value]="calculateAge(selectedAnimal?.birthday)"
-                                             disabled>
-                                    </div>
-                                  </div>
 
                                 </div>
                             </div>
@@ -97,11 +80,29 @@
                         <div class="bg-white rounded-2 shadow-sm p-4">
                             <div class="d-flex flex-column justify-content-center gap-3">
                                 <h5 class="m-0 text-center pb-2 m-2">Fiche santé</h5>
-                                <div class="d-flex flex-row justify-content-between">
-                                    <div class="d-flex flex-column gap-3">
+                                <div class="d-flex flex-wrap gap-2 justify-content-between flex-column">
+
+                                <div class="d-flex w-100 justify-content-between gap-2">
+                                  <div class="d-flex flex-fill justify-content-between">
+                                    <label for="birthday"
+                                           class="w-25 col-form-label fw-semibold text-black text-nowrap">Date de naissance:</label>
+                                    <div class="w-50">
+                                      <input type="date" id="birthday" class="form-control" placeholder="" formControlName="birthday" [value]="selectedAnimal?.birthday"
+                                             [disabled]="!isAddingAnimal">
+                                    </div>
+                                  </div>
+
+                                  <div class="d-flex">
+                                      <input type="text" id="age" class="form-control" placeholder="" [value]="calculateAge(selectedAnimal?.birthday)"
+                                             disabled>
+                                  </div>
+                                </div>
 
 
-                                        <div class="row align-items-center">
+
+
+
+                                <div class="row align-items-center">
                                             <label for="weight"
                                                 class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Poids:</label>
                                             <div class="col-sm-8">
@@ -120,8 +121,7 @@
                                                        [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex flex-column gap-3">
+
 
 
                                         <div class="row align-items-center">
@@ -144,7 +144,7 @@
                                                        [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>
-                                    </div>
+
                                 </div>
                               <label for="notes"
                                      class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Notes: </label>
@@ -179,6 +179,10 @@
             <div class="row justify-content-center p-4">
                 <!-- Section ajout de rendez-vous -->
                 <div class="col-sm bg-white rounded-2 shadow-sm p-4 d-flex me-5" style="min-height: 200px;">
+
+                  <!--------------------------------- FORM --------------------------------->
+                  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmitAppointment()">
+
                     <div class="d-flex flex-column justify-content-center gap-3 w-100">
                         <div class="row gap-3">
                             <!-- Colonne pour les champs 'Animal concerné' et 'Date et heure' -->
@@ -187,9 +191,11 @@
                                     <div class="row align-items-center">
                                         <label for="animal-concerne"
                                             class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Animal:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" id="animal-concerne" class="form-control"
-                                                placeholder="Animal concerné">
+                                        <div class="col-sm-8" >
+                                          <select id="animal-concerne" class="form-select" formControlName="concernedAnimal" >
+                                            <option value="" selected>Veuillez sélectionner l'animal concerné</option>
+                                            <option *ngFor="let animal of animals" [value]=animal.id>{{ animal.name }}</option>
+                                          </select>
                                         </div>
                                     </div>
 
@@ -199,7 +205,7 @@
                                             heure:</label>
                                         <div class="col-sm-8">
                                             <input type="datetime-local" id="date-heure" class="form-control"
-                                                placeholder="Date et heure du rendez-vous">
+                                                placeholder="Date et heure du rendez-vous" formControlName="appointmentDateTime">
                                         </div>
                                     </div>
                                 </div>
@@ -212,17 +218,27 @@
                                         <label for="type"
                                             class="col-sm-4 col-form-label fw-semibold text-black">Type:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="type" class="form-control"
-                                                placeholder="Type de rendez-vous">
+                                          <select id="type" class="form-select" formControlName="appointmentType">
+                                            <option value="" selected>Veuillez sélectionner le type du rendez-vous</option>
+                                            <option value="Consultation générale">Consultation générale</option>
+                                            <option value="Vaccination">Vaccination</option>
+                                            <option value="Vermifugation">Vermifugation</option>
+                                            <option value="Castration/Stérilisation">Castration/Stérilisation</option>
+                                            <option value="Soins dentaires">Soins dentaires</option>
+                                            <option value="Urgence">Urgence</option>
+                                            <option value="Toilettage">Toilettage</option>
+                                            <option value="Comportement">Comportement</option>
+                                            <option value="Physiothérapie">Physiothérapie</option>
+                                            <option value="Hydrothérapie">Hydrothérapie</option>
+                                          </select>
                                         </div>
                                     </div>
-
                                     <div class="row align-items-center">
                                         <label for="lieu"
                                             class="col-sm-4 col-form-label fw-semibold text-black">Lieu:</label>
                                         <div class="col-sm-8">
                                             <input type="text" id="lieu" class="form-control"
-                                                placeholder="Lieu du rendez-vous">
+                                                placeholder="Lieu du rendez-vous" formControlName="appointmentLocation">
                                         </div>
                                     </div>
                                 </div>
@@ -233,42 +249,61 @@
                         <div class="d-flex flex-column gap-2">
                             <label for="notes" class="fw-semibold text-black">Notes:</label>
                             <textarea id="notes" class="form-control bg-light fixed-size-textarea" rows="3"
-                                placeholder="Entrez la raison ici..."></textarea>
+                                placeholder="Entrez la raison ici..." formControlName="appointmentNotes"></textarea>
                         </div>
 
-                        <button class="btn bouton-voir-plus flex-grow-1">Ajouter le rendez-vous</button>
+                        <button class="btn bouton-voir-plus flex-grow-1" type="submit">Ajouter le rendez-vous</button>
                     </div>
+
+                  </form>
+
                 </div>
+
+
+
 
                 <!-- Section affichage des rendez-vous -->
-                <div class="col-sm bg-white rounded-2 shadow-sm p-4 ms-5" style="min-height: 200px;">
+              <div class="col-sm bg-white rounded-2 shadow-sm p-4 ms-5" style="min-height: 200px;">
 
-                    <h5 class="m-0">Rendez-vous de BB Jack:</h5>
+                <ng-container *ngIf="!hasAnyAppointments()">
+                  <div class="alert alert-info text-center">
+                    Aucun rendez-vous à venir pour vos animaux!
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="animals">
+                  <div *ngFor="let animal of animals">
+                    <ng-container *ngIf="getAppointmentsForAnimal(animal.id).length > 0">
+                    <h5 class="m-0">Rendez-vous de {{ animal.name }}:</h5>
                     <div class="h-100 w-100 rounded-2 p-4 d-flex flex-column gap-3">
-                        <!-- Affichage évènement -->
-                        <div class="bg-white rounded-2 shadow-sm d-flex align-items-center p-3 gap-2 w-100">
-                            <!-- Colonne pour l'image -->
+                      <ng-container *ngIf="appointments">
+                        <div *ngFor="let appointment of getAppointmentsForAnimal(animal.id)"    class="bg-white rounded-2 shadow-sm d-flex align-items-center p-3 gap-2 w-100">
+                          <ng-container *ngIf="appointment.animal.id === animal.id">
                             <div class="col-auto">
-                                <img src="..\assets\images\horloge.png" width="40" height="auto" />
+                              <img src="..\assets\images\horloge.png" width="40" height="auto" />
                             </div>
 
-                            <!-- Colonne pour le texte -->
                             <div class="flex-grow-1 p-0 ">
-                                <!-- Utilisez flex-grow-1 pour que cette div prenne l'espace restant -->
-                                <p class="mb-1 fw-semi-bold">Rendez-vous au vétérinaire - 31 janvier 2024</p>
+                              <p class="mb-1 fw-semi-bold">{{ appointment.type }}</p>
+                              <p class="text-muted mb-0">{{ appointment.dateTime | date:'mediumDate' }}</p>
                             </div>
 
-                            <!-- Colonne pour l'icône de suppression avec ms-auto pour pousser à droite -->
                             <div class="ms-auto">
-                                <a href="">
-                                    <img src="..\assets\images\supprimer.png" width="40" height="auto" />
-                                </a>
+                              <button (click)="deleteAppointment(appointment.id)" class="btn" style="background-color:transparent; border-color:transparent">
+                                <img src="..\assets\images\supprimer.png" width="40" height="auto" />
+                              </button>
                             </div>
+                          </ng-container>
                         </div>
-
+                      </ng-container>
                     </div>
+                    </ng-container>
 
-                </div>
+
+
+                  </div>
+                </ng-container>
+              </div>
             </div>
         </div>
     </div>

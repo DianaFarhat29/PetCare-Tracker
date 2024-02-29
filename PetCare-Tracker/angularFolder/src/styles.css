@@ -2,8 +2,29 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 
+/* width */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(51, 211, 222, 0.5)
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #33d4de;
+}
+
 .container-fluid {
   max-width: 1600px;
+
 }
 
 main {
@@ -203,3 +224,73 @@ header .current-date{
   left:0;
   bottom:0;
 }
+
+/* Tableau de bord */
+
+.list-animals {
+  height:520px !important;
+  overflow-y:scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #33D4DE #E0F8F9 ;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+.carousel-contenu {
+  height:100%;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+}
+
+.carousel-indicators {
+  gap:1rem;
+}
+
+.carousel-indicators button {
+  border-radius:100%;
+  height:1rem;
+  width:1rem;
+  border:1px solid #E0F8F9;
+  transition:all 0.5s;
+  scale:0.8;
+}
+
+.carousel-indicators .active {
+  scale:1;
+  background-color:#33D4DE;
+}
+
+.carousel-control-next {
+  display:flex;
+  gap:0.2rem;
+}
+
+.carousel-control-next-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2333D4DE'%3E%3Cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2333D4DE'%3E%3Cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
+}
+
+
+/* Mes animaux */
+
+.list-animals-2 {
+  overflow-y:scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #33D4DE #E0F8F9 ;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+#age {
+  background-color:#E0F8F9 ;
+  border:none;
+  text-align: center;
+}@import 'mdb-angular-ui-kit/assets/scss/mdb.scss';

@@ -1,14 +1,14 @@
-<main class=" container-fluid my-5 ">
+<main class=" container-fluid my-5">
   <div class="row ">
       <!-- Colonne de gauche -->
       <div class="col">
-        <div class="row d-flex flex-column">
+        <div class="row d-flex flex-column align-items-center">
            <!-- Mes animaux -->
-        <div class="row h-75 mb-5 ">
+        <div class="row h-75 mb-5">
         <h3 class="border-bottom w-50">Mes animaux</h3>
-          <div class="bg-primary h-75 w-100 rounded-2 shadow-sm p-4 gap-2 ">
+          <div class="bg-primary h-75 w-100 rounded-2 shadow-sm p-4 list-animals">
 
-            <div class="d-flex mb-5" *ngFor="let animal of animals">
+            <div class="d-flex " *ngFor="let animal of animals">
               <div class="bg-white shadow-sm mx-2 square rounded-2">
                 <img [src]="animal.picture" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
               </div>
@@ -27,24 +27,25 @@
             <!-- Conseils du jour -->
         <div class="row h-25">
         <h3 class="border-bottom w-50">Conseils du jour</h3>
-        <div class="bg-primary h-100 w-100 d-flex p-4 shadow-sm rounded-2 flex-column align-items-center justify-content-between">
-          <div class="bg-white h-100 w-75 rounded-2 shadow-sm text-center p-3 mb-4">
-            <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
-            <p class="p-4 m-0">Vérifiez toujours que votre animal a accès à de l'eau fraîche et propre, surtout pendant
+        <div class="bg-primary p-4 ">
+ 
+          <mdb-carousel [controls]="true" [animation]="'slide'" [indicators]="true" play >
+            <mdb-carousel-item class=" bg-white rounded-2 shadow-sm text-center p-5">
+                <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
+                <p class="px-5 py-3 ">Vérifiez toujours que votre animal a accès à de l'eau fraîche et propre, surtout pendant
               les jours chauds.</p>
-          </div>
-          <div> o o o </div>
-
-          <!-- <div class="bg-white h-auto d-inline-block w-25 rounded-2 shadow-sm text-center p-4">
-           <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
-           <p class="pt-2 m-0">Un contrôle régulier chez le vétérinaire est essentiel pour maintenir la santé et le
-             bien-être de votre animal.</p>
-         </div>
-         <div class="bg-white h-auto d-inline-block w-25 rounded-2 shadow-sm text-center p-4">
-           <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
-           <p class="pt-2 m-0">L'exercice quotidien est crucial pour le bien-être physique et mental de votre animal
-             (adapté à son âge et sa condition physique). </p>
-         </div>-->
+            </mdb-carousel-item>
+            <mdb-carousel-item class=" bg-white rounded-2 shadow-sm text-center p-5 ">
+              <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
+                <p class="px-5 py-3 ">Un contrôle régulier chez le vétérinaire est essentiel pour maintenir la santé et le
+                bien-être de votre animal.</p>
+          </mdb-carousel-item>
+          <mdb-carousel-item class=" bg-white rounded-2 shadow-sm text-center p-5 ">
+            <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
+              <p class="px-5 py-3 ">L'exercice quotidien est crucial pour le bien-être physique et mental de votre animal
+              (adapté à son âge et sa condition physique). </p>
+        </mdb-carousel-item>
+          </mdb-carousel>
         </div>
         </div>
       </div>
@@ -52,7 +53,7 @@
 
       <!-- Colonne de droite -->
       <div class="col">
-        <div class="row d-flex flex-column h-100">
+        <div class="row d-flex flex-column align-items-center h-100">
           <!-- À venir -->
           <div class="row mb-5">
             <h3 class="border-bottom w-50">À venir</h3>

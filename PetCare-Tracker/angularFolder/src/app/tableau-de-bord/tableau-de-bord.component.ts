@@ -9,6 +9,7 @@ import {HttpClient} from "@angular/common/http";
 import { Animal } from '../animal';
 import {Observable} from "rxjs";
 import {AnimalService} from "../services/animal-service";
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 
 @Component({
   selector: 'app-tableau-de-bord',
@@ -16,6 +17,7 @@ import {AnimalService} from "../services/animal-service";
   imports: [
     CommonModule,
     FullCalendarModule,
+    MdbCarouselModule,
   ],
   templateUrl: './tableau-de-bord.component.html',
   styleUrl: './tableau-de-bord.component.css',
@@ -39,7 +41,7 @@ export class TableauDeBordComponent implements OnInit{
   constructor(private animalService: AnimalService, private http: HttpClient) {}
 
   ngOnInit() {
-    const userId = 1; // Pour l'instant en dur
+    const userId = 2; // Pour l'instant en dur
     const url = 'http://localhost:8080/api/user/' + userId;
     this.animalService.findAll(url).subscribe(data => {
       this.animals = data;

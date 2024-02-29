@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnimalRepository extends CrudRepository<Animal, Long>, JpaRepository<Animal, Long> {
@@ -14,5 +15,7 @@ public interface AnimalRepository extends CrudRepository<Animal, Long>, JpaRepos
 
     // Method to find animal with owner id
     List<Animal> findByOwners_Id(Long ownerId);
+
+    Optional<Animal> findByName(String name);
 
 }

@@ -21,7 +21,11 @@ public class Appointment {
     @Column(nullable = false)
     private String type;
 
-    // This attribute can be null because it's optional
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private Owner owner;
+
+    @Column(nullable = false)
     private String notes;
 
     @ManyToOne
@@ -29,6 +33,9 @@ public class Appointment {
     private Animal animal;
 
     // Constructors
+    public Appointment() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -69,6 +76,14 @@ public class Appointment {
         this.notes = notes;
     }
 
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
     public Animal getAnimal() {
         return animal;
     }
@@ -87,6 +102,7 @@ public class Appointment {
                 ", location='" + location + '\'' +
                 ", type='" + type + '\'' +
                 ", notes='" + notes + '\'' +
+                ", owner=" + owner +
                 ", animal=" + animal +
                 '}';
     }

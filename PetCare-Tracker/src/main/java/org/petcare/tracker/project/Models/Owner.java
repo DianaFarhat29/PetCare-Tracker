@@ -21,6 +21,15 @@ public class Owner {
     private String lastName;
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private String noTel;
+
+    @Column(nullable = false)
+    private String password;
+    @Column(nullable = false)
+    private String role;
+
     @ManyToMany
     @JoinTable(
             name = "owner_animal",
@@ -31,11 +40,14 @@ public class Owner {
     private Set<Animal> animals = new HashSet<>();
 
     // Constructors
-    public Owner(Long id, String firstName, String lastName, String email, Set<Animal> animals) {
+    public Owner(Long id, String firstName, String lastName, String email, String noTel, String password, String role ,Set<Animal> animals) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.noTel = noTel;
+        this.password = password;
+        this.role = role;
         this.animals = animals;
     }
 
@@ -74,6 +86,30 @@ public class Owner {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getNoTel() {
+        return noTel;
+    }
+
+    public void setNoTel(String noTel) {
+        this.noTel = noTel;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Set<Animal> getAnimals() {
