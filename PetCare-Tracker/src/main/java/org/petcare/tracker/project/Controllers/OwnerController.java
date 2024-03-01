@@ -120,36 +120,24 @@ public class OwnerController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
-    @RequestMapping(value = "/cancelAppointment/{id}", produces = "application/json",
+    @RequestMapping(value = "/addAnimal", produces = "application/json",
             method=RequestMethod.POST)
     @Transactional
-    public ResponseEntity<Animal> addAnimal(@RequestBody Animal animal, @RequestParam String email) {
-        log.info("Received POST request for adding an animal to the owner.");
+    public ResponseEntity<Animal> addAnimal(@RequestBody Animal animal) {
+        log.info("Inside addAnimal method in the owner controller.");
 
-        Owner ownerRecherche = ownerService.getOwnerByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
+        log.info("Received animal data: " + animal);
 
-        List<Long> ownerId = Collections.singletonList(ownerRecherche.getId());
 
-        // Create the new animal object
-        // 1. Validate Owner Existence
-        Set<Owner> selectedOwner = ownerId.stream()
-                .map(ownerService::getOwnerById)
-                .flatMap(Optional::stream)
-                .collect(Collectors.toSet());
-
-        animal.setOwners(selectedOwner);
-
-        // Maintenir la symétrie (relation bidirectionnelle)
-        for (Owner owner : selectedOwner) {
+        for (Owner owner : animal.getOwners()) {
             owner.addAnimal(animal);
         }
 
         // Save the animal
-        animalService.saveAnimal(animal);
+        Animal savedAnimal = animalService.saveAnimal(animal);
 
-        log.info("Animal created successfully with ID: " + animal.getId());
-        return ResponseEntity.created(URI.create("/addAnimal/" + animal.getId())).body(animal);
+        log.info("Animal created successfully with ID: " + savedAnimal.getId());
+        return ResponseEntity.created(URI.create("/addAnimal/" + savedAnimal.getId())).body(savedAnimal);
     }
 
     // Method to book an appointment

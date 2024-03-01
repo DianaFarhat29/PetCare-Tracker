@@ -173,13 +173,15 @@ export class MesAnimauxComponent implements OnInit{
     }
 
     console.log('race:', this.checkoutForm.value.race);
-    console.log('raceRegex test result:', raceRegex.test(animal.race));
+    console.log('raceRegex test result:', raceRegex.test(<string>valueRace));
 
     console.log('gender:', this.checkoutForm.value.gender);
-    console.log('raceRegex test result:', raceRegex.test(animal.gender));
+    console.log('raceRegex test result:', raceRegex.test(<string>valueGender));
 
-    if (!conditionRegex.test(animal.healthCondition)) {
-      this.errors['healthCondition'] = 'La condition de santé est obligatoire.';
+    if (typeof valueHealthCondition === "string") {
+      if (valueHealthCondition.length == 0) {
+        (this.errors)['healthCondition'] = 'La condition est obligatoire.';
+      }
     }
 
     if (typeof valueName === "string") {
@@ -191,15 +193,15 @@ export class MesAnimauxComponent implements OnInit{
     }
 
     if (typeof valueRace === "string") {
-      if (valueRace.length == 0) {
+      if ((<string>valueRace).length == 0) {
         (this.errors)['race'] = 'La race est obligatoire.';
-      } else if (!raceRegex.test(valueRace)) {
+      } else if (!raceRegex.test(<string>valueRace)) {
         (this.errors)['race'] = 'La race doit être au moins 2 caractères alphabétiques.';
       }
     }
 
     if (typeof valueGender === "string") {
-    if (!valueGender) {
+    if (!<string>valueGender) {
       this.errors['gender'] = 'Veuillez sélectionner le sexe';
     }
     }
@@ -242,23 +244,57 @@ export class MesAnimauxComponent implements OnInit{
   onSubmit() {
     const validationResult = this.validateAnimal(this.selectedAnimal as Animal);
 
+    let  ownerIdsSet = new Set<number>();
+    if (this.ownerId){
+      ownerIdsSet.add(this.ownerId);
+    }
+
     // Gather appointment data from the form
     const animalData = {
+
+      ownerIds: Array.from(ownerIdsSet),
       name: this.checkoutForm.value['name'],
       race: this.checkoutForm.value['race'],
       gender: this.checkoutForm.value['gender'],
-      birthday: this.checkoutForm.value['birthday'],
+      birthday: this.checkoutForm.value['birthday'] ? new Date(this.checkoutForm.value['birthday'].slice(0, 10)) : null,
       weight: this.checkoutForm.value['weight'],
       height: this.checkoutForm.value['height'],
       healthCondition: this.checkoutForm.value['healthCondition'],
-      lastVisit: this.checkoutForm.value['lastVisit'],
+      lastVisit: this.checkoutForm.value['lastVisit'] ? new Date(this.checkoutForm.value['lastVisit'].slice(0, 10)) : null,
       notes: this.checkoutForm.value['notes'],
       picture: this.checkoutForm.value['picture'],
     };
 
-    console.log('ownerId: ' + this.ownerId);
+    console.log('animalData:', animalData);
 
-    this.http.post('http://localhost:8080/api/owners/addAnimal', animalData, this.currentUserEmail )
+    /*
+    console.log('ownerId: ' + animalData.ownerIds);
+    console.log('Type of ownerId: ' + typeof(animalData.ownerIds));
+    console.log("Animal name:" + animalData.name);
+    console.log('Type of name: ' + typeof(animalData.name));
+    console.log("Animal race:" + animalData.race);
+    console.log('Type of race:'+ typeof(animalData.race));
+    console.log("Animal gender:" + animalData.gender);
+    console.log('Type of gender:'+ typeof(animalData.gender));
+    console.log("Animal birthday:" + animalData.birthday);
+    console.log('Type of birthday:'+ typeof(animalData.birthday));
+    console.log("Animal weight:" + animalData.weight);
+    console.log('Type of weight:'+ typeof(animalData.weight));
+    console.log("Animal height:" + animalData.height);
+    console.log('Type of height:'+ typeof(animalData.height));
+    console.log("Animal healthCondition:" + animalData.healthCondition);
+    console.log('Type of healthCondition:'+ typeof(animalData.healthCondition));
+    console.log("Animal lastVisit:" + animalData.lastVisit);
+    console.log('Type of lastVisit:'+ typeof(animalData.lastVisit));
+    console.log("Animal notes:" + animalData.notes);
+    console.log('Type of notes:'+ typeof(animalData.notes));
+    console.log("Animal picture:" + animalData.picture);
+    console.log('Type of picture:'+ typeof(animalData.picture));
+    */
+
+    console.log('animalData (pre-send):', animalData);
+
+    this.http.post('http://localhost:8080/api/owners/addAnimal', animalData)
       .subscribe(
 
         response => {
@@ -287,7 +323,9 @@ export class MesAnimauxComponent implements OnInit{
       emailOwner: this.currentUserEmail
     };
 
-    this.http.post('http://localhost:8080/api/owners/bookAppointment', appointmentData)
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    this.http.post('http://localhost:8080/api/owners/bookAppointment', appointmentData, { headers })
       .subscribe(
 
         response => {

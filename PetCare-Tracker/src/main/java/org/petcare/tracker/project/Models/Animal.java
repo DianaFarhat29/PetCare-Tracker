@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,13 +19,12 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "animal_owner",
             joinColumns = @JoinColumn(name = "animal_id"),
             inverseJoinColumns = @JoinColumn(name = "owner_id")
     )
-    @JsonManagedReference
     private Set<Owner> owners = new HashSet<>();
     @Column(nullable = false)
     private String name;
@@ -72,6 +72,20 @@ public class Animal {
         this.owners = owners;
         this.name = name;
         this.race = race;
+    }
+
+    public Animal(Set<Owner> owners, String name, String race, String gender, LocalDate birthday, double weight, double height, String healthCondition, LocalDate lastVisit, String notes, String picture) {
+        this.owners = owners;
+        this.name = name;
+        this.race = race;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.weight = weight;
+        this.height = height;
+        this.healthCondition = healthCondition;
+        this.lastVisit = lastVisit;
+        this.notes = notes;
+        this.picture = picture;
     }
 
     // Empty constructor
@@ -194,4 +208,6 @@ public class Animal {
                 ", picture='" + picture + '\'' +
                 '}';
     }
+
+
 }
