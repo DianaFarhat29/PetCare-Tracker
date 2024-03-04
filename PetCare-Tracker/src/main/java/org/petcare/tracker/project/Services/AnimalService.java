@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public interface AnimalService {
 
     // Method to get animal with owner id
@@ -22,4 +21,10 @@ public interface AnimalService {
 
     // Method to find animal by name
     Optional<Animal> getAnimalByName(String animalName);
+
+    // Method to update animal's information
+    Animal updateAnimal(Animal animal);
+
+    // Method to delete an animal
+    void deleteAnimal(Long id);
 }

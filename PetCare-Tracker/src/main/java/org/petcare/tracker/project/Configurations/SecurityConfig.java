@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/animals/*").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
                         .anyRequest().permitAll()
                 );
 

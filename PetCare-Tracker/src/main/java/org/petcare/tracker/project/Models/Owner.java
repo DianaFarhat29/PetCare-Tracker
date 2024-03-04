@@ -31,7 +31,7 @@ public class Owner {
     @Column(nullable = false)
     private String role;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JsonIgnore
     @JoinTable(
             name = "owner_animal",

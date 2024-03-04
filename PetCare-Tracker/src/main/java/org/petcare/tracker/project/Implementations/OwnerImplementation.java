@@ -23,6 +23,10 @@ public class OwnerImplementation implements OwnerService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private AppointmentRepository animalRepository;
+
+
+    @Autowired
     private OwnerImplementation(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
     }
@@ -70,6 +74,11 @@ public class OwnerImplementation implements OwnerService {
     @Override
     public void cancelAppointment(Long appointmentId) {
         appointmentRepository.deleteById(appointmentId);
+    }
+
+    @Override
+    public void deleteAnimal(Long animalId) {
+        animalRepository.deleteById(animalId);
     }
 
 }

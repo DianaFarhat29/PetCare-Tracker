@@ -2,10 +2,12 @@ package org.petcare.tracker.project.Services;
 
 import org.petcare.tracker.project.Models.Appointment;
 import org.petcare.tracker.project.Models.Owner;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface OwnerService {
 
     // Method to find owner by id
@@ -26,9 +28,12 @@ public interface OwnerService {
     //Method to delete an owner's information
     void deleteOwner(Long id);
 
+    //Method to get all the owners
     List<Owner> getAllOwners();
 
     // Method to cancel an appointment
     void cancelAppointment(Long appointmentId);
 
+    // Method to delete an animal
+    void deleteAnimal(Long animalId);
 }

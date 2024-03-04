@@ -3,10 +3,7 @@ package org.petcare.tracker.project.Controllers;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
-import org.petcare.tracker.project.Models.Animal;
-import org.petcare.tracker.project.Models.Appointment;
-import org.petcare.tracker.project.Models.AppointmentData;
-import org.petcare.tracker.project.Models.Owner;
+import org.petcare.tracker.project.Models.*;
 import org.petcare.tracker.project.PetCareTrackerProjectApplication;
 import org.petcare.tracker.project.Repositories.AnimalRepository;
 import org.petcare.tracker.project.Repositories.AppointmentRepository;
@@ -24,6 +21,7 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -123,22 +121,112 @@ public class OwnerController {
     @RequestMapping(value = "/addAnimal", produces = "application/json",
             method=RequestMethod.POST)
     @Transactional
-    public ResponseEntity<Animal> addAnimal(@RequestBody Animal animal) {
+    public ResponseEntity<Animal> addAnimal(@RequestBody AnimalData animalData, RedirectAttributes redirectAttributes) {
         log.info("Inside addAnimal method in the owner controller.");
 
-        log.info("Received animal data: " + animal);
+        log.info("Received animal data: " + animalData.getOwner() + " " + animalData.getName() + " " + animalData.getRace() + " " + animalData.getBirthday() + " " + animalData.getWeight() + " " + animalData.getHeight() + " " + animalData.getHealthCondition() + " " + animalData.getLastVisit() + " " + animalData.getNotes() + " " + animalData.getPicture());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;;
+
+        try {
+
+            // Fetch Owner by ID
+            Optional<Owner> ownerOptional = ownerService.getOwnerById(animalData.getOwner());
+
+            if (ownerOptional.isEmpty()) {
+                throw new IllegalArgumentException("Owner not found with ID: " + animalData.getOwner());
+            }
+
+            Owner owner = ownerOptional.get();
+
+            Set<Owner> ownerSet = new HashSet<Owner> ();
+
+            ownerSet.add(owner);
+
+        // Validate that a owner was found
+        if (ownerSet.isEmpty()) {
+            throw new IllegalArgumentException("No valid owner IDs provided");
+        }
+
+        Animal newAnimal = new Animal(null, ownerSet, animalData.getName(), animalData.getRace(), animalData.getGender(), animalData.getBirthday() != null ? LocalDate.parse(animalData.getBirthday(), formatter) : null , Double.parseDouble(animalData.getWeight()), Double.parseDouble(animalData.getHeight()), animalData.getHealthCondition(),  animalData.getLastVisit() != null ? LocalDate.parse(animalData.getLastVisit(), formatter) : null,
+                animalData.getNotes(), animalData.getPicture());
 
 
-        for (Owner owner : animal.getOwners()) {
-            owner.addAnimal(animal);
+        // Maintenir la symétrie (si relation bidirectionnelle)
+        for (Owner ownerBidirectionnelle : ownerSet) {
+            owner.addAnimal(newAnimal);
         }
 
         // Save the animal
-        Animal savedAnimal = animalService.saveAnimal(animal);
+        animalService.saveAnimal(newAnimal);
+            // Add success message
+            redirectAttributes.addFlashAttribute("successMessage", "Animal ajouté avec succès.");
 
-        log.info("Animal created successfully with ID: " + savedAnimal.getId());
-        return ResponseEntity.created(URI.create("/addAnimal/" + savedAnimal.getId())).body(savedAnimal);
+            return ResponseEntity.created(URI.create("/addAnimal/" + newAnimal.getId())).body(newAnimal);
+
+        } catch (Exception e) {
+
+            // Manage errors
+            redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de l'ajout de l'animal: " + e.getMessage());
+
+            log.info("errorMessage " + "Erreur lors de l'ajout de l'animal: " + e.getMessage());
+
+            return ResponseEntity.badRequest().build();
+
+        }
     }
+
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    @RequestMapping(value = "/updateAnimalProfile", produces = "application/json",
+            method=RequestMethod.PUT)
+    @Transactional
+    public ResponseEntity<Animal> updateAnimalProfile(@ModelAttribute("animal") Animal animal,
+                                       @RequestParam Map<String, String> allParams,
+                                       // Authentication authentication
+                                        RedirectAttributes redirectAttributes) {
+
+        log.info("Inside updateAnimalProfile controller methode." );
+        log.info("Received animal data: " + animal.getId() + " " + animal.getName() + " " + animal.getRace() + " " + animal.getBirthday() + " " + animal.getWeight() + " " + animal.getHeight() + " " + animal.getHealthCondition() + " " + animal.getLastVisit() + " " + animal.getNotes() + " " + animal.getPicture());
+
+        // Vérification de l'existence de l'animal
+        Optional<Animal> existingAnimalOpt = animalService.getAnimalById(animal.getId());
+        if (!existingAnimalOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("error", "Animal with id " + animal.getId() + " not found.");
+            return ResponseEntity.badRequest().build();
+        }
+
+        Animal existingAnimal = existingAnimalOpt.get();
+
+        // Mise à jour des informations de base du patient
+        animalService.updateAnimal(animal);
+
+        // Sauvegarder les modifications
+        animalService.updateAnimal(existingAnimal);
+
+        redirectAttributes.addFlashAttribute("success", "Profil de l'animal mis à jour avec succès.");
+        return ResponseEntity.created(URI.create("/updateAnimalProfile/" + animal.getId())).body(animal);
+    }
+
+    // Cancel an appointment
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    //@GetMapping("/cancelAppointment/{id}")
+    @RequestMapping(value = "/deleteAnimal/{id}",
+            produces = "application/json",
+            method=RequestMethod.DELETE)
+    @Transactional
+    public ResponseEntity<Animal> deleteAnimal(@PathVariable Long id) {
+
+        log.info("Inside deleteAnimal controller methode." );
+        log.info("Received animal id: " + id);
+
+        try {
+            animalService.deleteAnimal(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     // Method to book an appointment
     @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")

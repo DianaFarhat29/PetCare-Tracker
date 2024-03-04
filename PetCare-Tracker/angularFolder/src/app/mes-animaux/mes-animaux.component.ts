@@ -37,8 +37,6 @@ export class MesAnimauxComponent implements OnInit{
   private ownerId: number | undefined;
   public tempAppointments: Appointment[] = [];
 
-
-
   constructor(private animalService: AnimalService, private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -53,7 +51,7 @@ export class MesAnimauxComponent implements OnInit{
           localStorage.setItem('currentUserEmail', owner.email);
           this.currentUserEmail = owner.email;
           this.ownerId = ownerId;
-          console.log('currentUserEmail:', owner.email)
+
         });
       }
 
@@ -61,12 +59,12 @@ export class MesAnimauxComponent implements OnInit{
         .subscribe(appointments => {
           this.tempAppointments = appointments;
         });
-
-
     });
   }
 
   showAnimalDetails(animal: Animal) {
+    console.log('showAnimalDetails - animal:', animal); // Log the complete animal object
+    console.log('showAnimalDetails - animal.id:', animal.id); // Log the animal's ID specifically
     this.selectedAnimal = animal;
   }
 
@@ -127,16 +125,16 @@ export class MesAnimauxComponent implements OnInit{
 
   checkoutForm = this.formBuilder.group({
     // Animal checkoutForm
-    name: ['', Validators.required],
-    race: ['', Validators.required],
-    gender: ['', Validators.required],
-    birthday: ['', Validators.required],
-    weight: ['', Validators.required],
-    height: ['', Validators.required],
-    healthCondition: ['', Validators.required],
-    lastVisit: ['', Validators.required],
-    notes: ['', Validators.required],
-    picture: ['', Validators.required],
+    name: [{value: '', disabled: true}, Validators.required],
+    race: [{value: '', disabled: true}, Validators.required],
+    gender: [{value: '', disabled: true}, Validators.required],
+    birthday: [{value: '', disabled: true}, Validators.required],
+    weight: [{value: '', disabled: true}, Validators.required],
+    height: [{value: '', disabled: true}, Validators.required],
+    healthCondition: [{value: '', disabled: true}, Validators.required],
+    lastVisit: [{value: '', disabled: true}, Validators.required],
+    notes: [{value: '', disabled: true}, Validators.required],
+    picture: [{value: '', disabled: true}, Validators.required],
 
     // Appointment checkoutForm
     concernedAnimal: ['', Validators.required],
@@ -244,15 +242,10 @@ export class MesAnimauxComponent implements OnInit{
   onSubmit() {
     const validationResult = this.validateAnimal(this.selectedAnimal as Animal);
 
-    let  ownerIdsSet = new Set<number>();
-    if (this.ownerId){
-      ownerIdsSet.add(this.ownerId);
-    }
-
     // Gather appointment data from the form
     const animalData = {
 
-      ownerIds: Array.from(ownerIdsSet),
+      owner: this.ownerId,
       name: this.checkoutForm.value['name'],
       race: this.checkoutForm.value['race'],
       gender: this.checkoutForm.value['gender'],
@@ -265,32 +258,8 @@ export class MesAnimauxComponent implements OnInit{
       picture: this.checkoutForm.value['picture'],
     };
 
-    console.log('animalData:', animalData);
-
-    /*
-    console.log('ownerId: ' + animalData.ownerIds);
-    console.log('Type of ownerId: ' + typeof(animalData.ownerIds));
-    console.log("Animal name:" + animalData.name);
-    console.log('Type of name: ' + typeof(animalData.name));
-    console.log("Animal race:" + animalData.race);
-    console.log('Type of race:'+ typeof(animalData.race));
-    console.log("Animal gender:" + animalData.gender);
-    console.log('Type of gender:'+ typeof(animalData.gender));
-    console.log("Animal birthday:" + animalData.birthday);
-    console.log('Type of birthday:'+ typeof(animalData.birthday));
-    console.log("Animal weight:" + animalData.weight);
-    console.log('Type of weight:'+ typeof(animalData.weight));
-    console.log("Animal height:" + animalData.height);
-    console.log('Type of height:'+ typeof(animalData.height));
-    console.log("Animal healthCondition:" + animalData.healthCondition);
-    console.log('Type of healthCondition:'+ typeof(animalData.healthCondition));
-    console.log("Animal lastVisit:" + animalData.lastVisit);
-    console.log('Type of lastVisit:'+ typeof(animalData.lastVisit));
-    console.log("Animal notes:" + animalData.notes);
-    console.log('Type of notes:'+ typeof(animalData.notes));
-    console.log("Animal picture:" + animalData.picture);
-    console.log('Type of picture:'+ typeof(animalData.picture));
-    */
+    console.log('owner: ' + animalData.owner);
+    console.log('Type of owner: ' + typeof(animalData.owner));
 
     console.log('animalData (pre-send):', animalData);
 
@@ -309,6 +278,38 @@ export class MesAnimauxComponent implements OnInit{
           alert('Erreur lors de l\'ajout de l\'animal. Veuillez réessayer.');
         }
       );
+  }
+
+  onEditButtonClick() {
+    this.checkoutForm.enable();
+  }
+
+  deleteAnimal(animalId: number | undefined) {
+
+    if (typeof animalId === 'number') {
+      console.log('Deleting animal with id:'+ animalId);
+      console.log(`http://localhost:8080/api/owners/deleteAnimal/${animalId}`);
+      this.http.delete(`http://localhost:8080/api/owners/deleteAnimal/${animalId}`)
+        .subscribe(
+
+          response => {
+            // Handle successful appointment deletion
+            // Remove the appointment from the tempAppointments array
+            this.tempAppointments = this.tempAppointments.filter(a => a.id !== animalId);
+            console.log('Animal deleted successfully:', response);
+            alert('Animal supprimé avec succès!');
+
+          }, error => {
+            // Handle the error
+            console.error('Error deleting animal:', error);
+            alert('Erreur lors de la suppression de l\'animal. Veuillez réessayer.');
+          });
+    } else {
+
+      console.error('Error deleting animal: Animal ID is undefined.');
+    }
+
+
   }
 
   onSubmitAppointment() {
