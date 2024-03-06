@@ -40,7 +40,11 @@
                               <h5 class="m-0">{{ animal.name }}</h5>
                               <p class="m-0 text-gray-custom">{{ animal.race }}</p>
                             </div>
-                            <button class="btn bouton-voir-plus" (click)="showAnimalDetails(animal)">Détails</button>
+                            <ng-container *ngIf="!isAdding">
+                              <button class="btn bouton-voir-plus" (click)="showAnimalDetails(animal)">Détails</button>
+                            </ng-container>
+
+
                           </div>
                         </div>
                   </div>
@@ -173,11 +177,22 @@
                         </div>
 
                         <div class="d-flex flex-row gap-2 w-100 pt-2" *ngIf="selectedAnimal">
-                            <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="onEditButtonClick()">Modifier</button>
-                            <button class="btn bouton-voir-plus flex-grow-1 " type="button" (click)="editAnimal(selectedAnimal)">Sauvegarder</button>
-                          <button class="btn bouton-voir-plus flex-grow-1 " type="submit">Ajouter</button>
-                            <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="deleteAnimal(selectedAnimal?.id)">Supprimer</button>
+                          <button *ngIf="selectedAnimal && !isEditing && !isAdding"
+                                  class="btn bouton-voir-plus  flex-grow-1 " type="button"
+                                  (click)="onEditButtonClick()">Modifier</button>
+                          <button *ngIf="selectedAnimal && !isEditing && !isAdding"
+                                  class="btn bouton-voir-plus flex-grow-1 " type="button"
+                                  (click)="deleteAnimal(selectedAnimal?.id)">Supprimer</button>
 
+                          <button *ngIf="isEditing" class="btn bouton-voir-plus flex-grow-1 "
+                                  type="button" (click)="editAnimal(selectedAnimal)">Sauvegarder</button>
+                          <button *ngIf="isEditing" class="btn bouton-voir-plus flex-grow-1 "
+                                  type="button" (click)="cancel()">Annuler</button>
+
+                          <button *ngIf="isAdding" class="btn bouton-voir-plus flex-grow-1 "
+                                  type="submit">Ajouter</button>
+                          <button *ngIf="isAdding" class="btn bouton-voir-plus flex-grow-1 "
+                                  type="button" (click)="cancel()">Annuler</button>
                         </div>
 
 
@@ -269,6 +284,9 @@
                         </div>
 
                         <button class="btn bouton-voir-plus flex-grow-1" type="submit">Ajouter le rendez-vous</button>
+                        <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="cancel()">Annuler</button>
+
+
                     </div>
 
                   </form>

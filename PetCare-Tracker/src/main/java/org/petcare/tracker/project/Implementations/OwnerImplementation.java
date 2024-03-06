@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.petcare.tracker.project.Models.Animal;
 import org.petcare.tracker.project.Models.Appointment;
 import org.petcare.tracker.project.Models.Owner;
+import org.petcare.tracker.project.Repositories.AnimalRepository;
 import org.petcare.tracker.project.Repositories.AppointmentRepository;
 import org.petcare.tracker.project.Repositories.OwnerRepository;
 import org.petcare.tracker.project.Services.OwnerService;
@@ -26,7 +27,7 @@ public class OwnerImplementation implements OwnerService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
-    private AppointmentRepository animalRepository;
+    private AnimalRepository animalRepository;
 
 
     // Implementation for finding clinic by id
@@ -76,14 +77,20 @@ public class OwnerImplementation implements OwnerService {
             // Delete associated appointements
             appointmentRepository.deleteByOwnerId(ownerId);
 
-            // Dissociate from animals
+            for (Animal animal : owner.getAnimals()) {
+                animal.getOwners().remove(owner);
+                animalRepository.save(animal);
+            }
+            owner.getAnimals().clear();
 
 
             ownerRepository.deleteById(ownerId);
         } else {
-            throw new EntityNotFoundException("Animal not found with id: " + ownerId);
+            throw new EntityNotFoundException("Owner not found with id: " + ownerId);
         }
     }
+
+
 
     @Override
     public List<Owner> getAllOwners() {

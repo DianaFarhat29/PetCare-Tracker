@@ -195,7 +195,6 @@ public class Animal {
     public String toString() {
         return "Animal{" +
                 "id=" + id +
-                ", owners=" + owners +
                 ", name='" + name + '\'' +
                 ", race='" + race + '\'' +
                 ", gender='" + gender + '\'' +

@@ -116,16 +116,22 @@ public class OwnerController {
     }
 
 
-    // Delete a user
-    @DeleteMapping("/owners/{id}")
-    public ResponseEntity<?> deleteOwner(@PathVariable Long id) {
+    // Delete owner by id
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    @RequestMapping(value = "/delete/{id}",
+            produces = "application/json",
+            method=RequestMethod.DELETE)
+    @Transactional
+    public ResponseEntity<Owner> deleteOwner(@PathVariable Long id) {
+
+        log.info("Inside deleteOwner controller methode." );
+        log.info("Received owner id: " + id);
+
         try {
             ownerService.deleteOwner(id);
-            return ResponseEntity.ok().build(); // Retourne un statut 200 OK pour indiquer la réussite de la suppression
+            return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build(); // Retourne un statut 404 NOT FOUND si l'entité n'existe pas
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Une erreur s'est produite lors de la suppression de l'utilisateur."); // Gestion des autres exceptions
+            return ResponseEntity.notFound().build();
         }
     }
 

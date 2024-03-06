@@ -134,7 +134,6 @@ public class Owner {
                 ", noTel='" + noTel + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", animals=" + animals +
                 '}';
     }
 

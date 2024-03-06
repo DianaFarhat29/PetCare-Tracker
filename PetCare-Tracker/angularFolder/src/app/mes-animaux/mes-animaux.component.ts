@@ -43,6 +43,8 @@ export class MesAnimauxComponent implements OnInit{
   submitted = false;
   selectedAppointment: Appointment | null = null;
   showAppointmentDetails: boolean = false;
+  isEditing: boolean = false;
+  isAdding: boolean = false;
 
   constructor(private animalService: AnimalService, private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder,) {}
 
@@ -69,10 +71,7 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   showAnimalDetails(animal: Animal) {
-    console.log('showAnimalDetails - animal:', animal); // Log the complete animal object
-    console.log('showAnimalDetails - animal.id:', animal.id); // Log the animal's ID specifically
     console.log('showAnimalDetails - animal.id:', animal.birthday); // Log the animal's birthday specifically
-
     this.selectedAnimal = animal;
 
   }
@@ -124,6 +123,8 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   clearInputsAndEnable() {
+    this.isAdding = true;
+    this.isEditing = false;
     this.checkoutForm.enable();
     this.selectedAnimal = { ...{
         id: 0,
@@ -291,6 +292,7 @@ export class MesAnimauxComponent implements OnInit{
           console.log('Animal created successfully:', response);
           alert('Animal ajouté avec succès!');
           this.checkoutForm.reset();
+          window.location.reload();
         },
         error => {
           // Handle errors during appointment creation
@@ -301,10 +303,12 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   onEditButtonClick() {
-    this.checkoutForm.enable();
+    this.isEditing = true;
+    this.isAdding = false;
   }
 
   editAnimal(animal: Animal): void {
+    this.isEditing = true;
     console.log("Animal ID : " + animal.id);
     // Check if id is defined
     if (!animal.id) {
@@ -335,6 +339,7 @@ export class MesAnimauxComponent implements OnInit{
           this.submitted = true;
           // Réinitialiser la sélection de l'animal après l'enregistrement
           this.selectedAnimal = undefined;
+          this.isEditing = false;
         },
         error: error => {
           console.log("Erreur lors de l'enregistrement des modifications :", error);
@@ -344,28 +349,31 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   deleteAnimal(animalId: number | undefined) {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cet animal ? Cette action est irréversible.")) {
+      if (typeof animalId === 'number') {
+        console.log('Deleting animal with id:'+ animalId);
 
-    if (typeof animalId === 'number') {
-      console.log('Deleting animal with id:'+ animalId);
+        this.http.delete(`http://localhost:8080/api/owners/deleteAnimal/${animalId}`)
+          .subscribe(
 
-      this.http.delete(`http://localhost:8080/api/owners/deleteAnimal/${animalId}`)
-        .subscribe(
+            response => {
+              // Handle successful appointment deletion
+              // Remove the appointment from the tempAppointments array
+              this.tempAnimals = this.tempAnimals.filter(a => a.id !== animalId);
+              console.log('Animal deleted successfully:', response);
+              alert('Animal supprimé avec succès!');
 
-          response => {
-            // Handle successful appointment deletion
-            // Remove the appointment from the tempAppointments array
-            this.tempAnimals = this.tempAnimals.filter(a => a.id !== animalId);
-            console.log('Animal deleted successfully:', response);
-            alert('Animal supprimé avec succès!');
+            }, error => {
+              // Handle the error
+              console.error('Error deleting animal:', error);
+              alert('Erreur lors de la suppression de l\'animal. Veuillez réessayer.');
+            });
+      } else {
 
-          }, error => {
-            // Handle the error
-            console.error('Error deleting animal:', error);
-            alert('Erreur lors de la suppression de l\'animal. Veuillez réessayer.');
-          });
+        console.error('Error deleting animal: Animal ID is undefined.');
+      }
     } else {
 
-      console.error('Error deleting animal: Animal ID is undefined.');
     }
   }
 
@@ -429,23 +437,32 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   deleteAppointment(appointmentId: number) {
-    console.log('Deleting appointment with id:'+ appointmentId);
-    console.log(`http://localhost:8080/api/owners/cancelAppointment/${appointmentId}`);
-    this.http.delete(`http://localhost:8080/api/owners/cancelAppointment/${appointmentId}`)
-      .subscribe(
+    if (confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ? Cette action est irréversible.")) {
+      console.log('Deleting appointment with id:'+ appointmentId);
+      console.log(`http://localhost:8080/api/owners/cancelAppointment/${appointmentId}`);
+      this.http.delete(`http://localhost:8080/api/owners/cancelAppointment/${appointmentId}`)
+        .subscribe(
 
-        response => {
-          // Handle successful appointment deletion
-          // Remove the appointment from the tempAppointments array
-          this.tempAppointments = this.tempAppointments.filter(a => a.id !== appointmentId);
-          console.log('Appointment deleted successfully:', response);
-          alert('Rendez-vous supprimé avec succès!');
+          response => {
+            // Handle successful appointment deletion
+            // Remove the appointment from the tempAppointments array
+            this.tempAppointments = this.tempAppointments.filter(a => a.id !== appointmentId);
+            console.log('Appointment deleted successfully:', response);
+            alert('Rendez-vous supprimé avec succès!');
 
-      }, error => {
-        // Handle the error
-        console.error('Error deleting appointment:', error);
-        alert('Erreur lors de la suppression du rendez-vous. Veuillez réessayer.');
-      });
+          }, error => {
+            // Handle the error
+            console.error('Error deleting appointment:', error);
+            alert('Erreur lors de la suppression du rendez-vous. Veuillez réessayer.');
+          });
+    } else {
+
+    }
   }
 
+  cancel() {
+    this.isAdding = false;
+    this.isEditing = false;
+    window.location.reload();
+  }
 }

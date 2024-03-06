@@ -7,7 +7,7 @@ import {Owner} from "../owner";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AnimalModel} from "../animal-model";
 import {OwnerModel} from "../owner-model";
-import {RouterLink, RouterLinkActive} from "@angular/router";
+import {RouterLink, RouterLinkActive, Router} from "@angular/router";
 
 @Component({
   selector: 'app-mon-compte',
@@ -33,7 +33,7 @@ export class MonCompteComponent {
     });
   }
 
-  constructor(private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder) {}
+  constructor(private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder, private router: Router) {}
 
   checkoutForm = this.formBuilder.group({
     // Animal checkoutForm
@@ -41,35 +41,45 @@ export class MonCompteComponent {
     lastName: [{value: '', disabled: true}, Validators.required],
     email: [{value: '', disabled: true}, Validators.required],
     noTel: [{value: '', disabled: true}, Validators.required],
+  });
+
+  checkoutFormPassword = this.formBuilder.group({
     password: [{value: '', disabled: true}, Validators.required],
+    newPassword: [{value: '', disabled: true}, Validators.required],
   });
 
   onEditButtonClick() {
     this.checkoutForm.enable();
   }
 
+  onEditPasswordButtonClick() {
+    this.checkoutFormPassword.enable();
+  }
+
   deleteOwner(ownerId: number | undefined) {
+    if (confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) {
+      if (typeof ownerId === 'number') {
+        console.log('Deleting animal with id:'+ ownerId);
 
-    if (typeof ownerId === 'number') {
-      console.log('Deleting animal with id:'+ ownerId);
+        this.http.delete(`http://localhost:8080/api/owners/delete/${ownerId}`)
+          .subscribe(
 
-      this.http.delete(`http://localhost:8080/api/owners/delete/${ownerId}`)
-        .subscribe(
+            response => {
+              // Handle successful appointment deletion
+              this.tempOwner = this.tempOwner.filter(a => a.id !== ownerId);
+              console.log('Owner deleted successfully:', response);
+              alert('Propriétaire supprimé avec succès!');
+              this.router.navigate(['/']);
 
-          response => {
-            // Handle successful appointment deletion
-            this.tempOwner = this.tempOwner.filter(a => a.id !== ownerId);
-            console.log('Owner deleted successfully:', response);
-            alert('Propriétaire supprimé avec succès!');
-
-          }, error => {
-            // Handle the error
-            console.error('Error deleting animal:', error);
-            alert('Erreur lors de la suppression du propriétaire. Veuillez réessayer.');
-          });
+            }, error => {
+              // Handle the error
+              console.error('Error deleting owner:', error);
+              alert('Erreur lors de la suppression du propriétaire. Veuillez réessayer.');
+            });
+      } else {
+        console.error('Error deleting owner: owner ID is undefined.');
+      }
     } else {
-
-      console.error('Error deleting animal: Animal ID is undefined.');
     }
   }
 
@@ -88,7 +98,7 @@ export class MonCompteComponent {
       lastName: this.checkoutForm.value['lastName']? this.checkoutForm.value['lastName'] : owner.lastName,
       email: this.checkoutForm.value['email']? this.checkoutForm.value['email'] : owner.email,
       noTel: this.checkoutForm.value['noTel']? this.checkoutForm.value['noTel'] : owner.noTel,
-      password: this.checkoutForm.value['password']? this.checkoutForm.value['password'] : owner.password,
+      password: owner.password,
       role: owner.role,
     }
 
@@ -97,13 +107,64 @@ export class MonCompteComponent {
       .subscribe({
         next: response => {
           console.log("Modifications enregistrées avec succès :", response);
+          alert('Modifications enregistrées avec succès.');
           this.submitted = true;
-          // this.selectedOwner = undefined;
+          window.location.reload();
         },
         error: error => {
           console.log("Erreur lors de l'enregistrement des modifications :", error);
+          alert('Erreur lors de l\'enregistrement des modifications.');
+          window.location.reload();
           // Gérer l'erreur ici
         }
       });
+  }
+
+  // OnSubmit button updates owner password
+  onSubmitPassword(owner: Owner): void {
+    console.log("owner ID : " + owner.id);
+    // Check if id is defined
+    if (!owner.id) {
+      console.error("L'identifiant de l'owner n'est pas défini.");
+      return;
+    }
+
+    if(this.checkoutFormPassword.value['password'] !== owner.password) {
+      console.error("Le mot de passe actuel est incorrecte.");
+      alert('Le mot de passe actuel est incorrecte.');
+      return;
+    }
+
+    this.selectedOwner  = {
+      id: owner.id,
+      firstName: owner.firstName,
+      lastName: owner.lastName,
+      email: owner.email,
+      noTel: owner.noTel,
+      password: this.checkoutFormPassword.value['newPassword']? this.checkoutFormPassword.value['newPassword'] : owner.password,
+      role: owner.role,
+    }
+
+    // Send request to update the owner
+    this.ownerService.updateOwner(this.selectedOwner)
+      .subscribe({
+        next: response => {
+          console.log("Modification du mot de passe enregistrée avec succès :", response);
+          alert('Modification du mot de passe enregistrée avec succès.');
+          this.submitted = true;
+          window.location.reload();
+          // this.selectedOwner = undefined;
+        },
+        error: error => {
+          console.log("Erreur lors de l'enregistrement de la modification du mot de passe:", error);
+          alert('Erreur lors de l\'enregistrement de la modification du mot de passe.');
+          window.location.reload();
+          // Gérer l'erreur ici
+        }
+      });
+  }
+
+  cancel() {
+    window.location.reload();
   }
 }
