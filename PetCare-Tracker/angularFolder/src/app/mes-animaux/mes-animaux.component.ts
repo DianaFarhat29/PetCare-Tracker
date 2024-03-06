@@ -3,10 +3,11 @@ import {CommonModule, NgForOf} from "@angular/common";
 import {Animal} from "../animal";
 import {AnimalService} from "../services/animal-service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { AnimalModel } from '../animal-model';
+import {AnimalModel } from '../animal-model';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {OwnerService} from "../services/owner-service";
 import {Appointment} from "../appointment";
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router';
 import {OwnerModel} from "../owner-model";
 
 
@@ -16,7 +17,9 @@ import {OwnerModel} from "../owner-model";
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './mes-animaux.component.html',
   styleUrl: './mes-animaux.component.css',
@@ -36,8 +39,12 @@ export class MesAnimauxComponent implements OnInit{
   private currentUserEmail: any;
   private ownerId: number | undefined;
   public tempAppointments: Appointment[] = [];
+  public tempAnimals: Appointment[] = [];
+  submitted = false;
+  selectedAppointment: Appointment | null = null;
+  showAppointmentDetails: boolean = false;
 
-  constructor(private animalService: AnimalService, private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder) {}
+  constructor(private animalService: AnimalService, private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder,) {}
 
   ngOnInit() {
     const userId = 2; // Pour l'instant en dur
@@ -48,8 +55,6 @@ export class MesAnimauxComponent implements OnInit{
       if (data.length > 0) {
         const ownerId = userId;  // Get the owner ID
         this.ownerService.getOwnerById(ownerId).subscribe(owner => {
-          localStorage.setItem('currentUserEmail', owner.email);
-          this.currentUserEmail = owner.email;
           this.ownerId = ownerId;
 
         });
@@ -59,13 +64,17 @@ export class MesAnimauxComponent implements OnInit{
         .subscribe(appointments => {
           this.tempAppointments = appointments;
         });
+
     });
   }
 
   showAnimalDetails(animal: Animal) {
     console.log('showAnimalDetails - animal:', animal); // Log the complete animal object
     console.log('showAnimalDetails - animal.id:', animal.id); // Log the animal's ID specifically
+    console.log('showAnimalDetails - animal.id:', animal.birthday); // Log the animal's birthday specifically
+
     this.selectedAnimal = animal;
+
   }
 
   get appointments(): Appointment[] | undefined {
@@ -78,6 +87,16 @@ export class MesAnimauxComponent implements OnInit{
 
   hasAnyAppointments(): boolean {
     return this.tempAppointments.some(appointment => appointment.animal);
+  }
+
+  toggleAppointmentDetails(appointment: Appointment) {
+    if (this.showAppointmentDetails && this.selectedAppointment === appointment) {
+      this.selectedAppointment = null;
+      this.showAppointmentDetails = false;
+    } else {
+      this.selectedAppointment = appointment;
+      this.showAppointmentDetails = true;
+    }
   }
 
   calculateAge(birthday: Date | undefined): string {
@@ -105,6 +124,7 @@ export class MesAnimauxComponent implements OnInit{
   }
 
   clearInputsAndEnable() {
+    this.checkoutForm.enable();
     this.selectedAnimal = { ...{
         id: 0,
         owner: 0,
@@ -284,18 +304,57 @@ export class MesAnimauxComponent implements OnInit{
     this.checkoutForm.enable();
   }
 
+  editAnimal(animal: Animal): void {
+    console.log("Animal ID : " + animal.id);
+    // Check if id is defined
+    if (!animal.id) {
+      console.error("L'identifiant de l'animal n'est pas défini.");
+      return;
+    }
+
+    this.selectedAnimal  = {
+      id: animal.id,
+      owner: animal.owner,
+      name: this.checkoutForm.value['name']? this.checkoutForm.value['name'] : animal.name,
+      race: this.checkoutForm.value['race']? this.checkoutForm.value['race'] : animal.race,
+      gender: this.checkoutForm.value['gender']? this.checkoutForm.value['gender'] : animal.gender,
+      birthday: this.checkoutForm.value['birthday'] ? new Date(this.checkoutForm.value['birthday'].slice(0, 10)) : animal.birthday,
+      weight: (Number) (this.checkoutForm.value['weight']? this.checkoutForm.value['weight'] : animal.weight),
+      height: (Number) (this.checkoutForm.value['height']? this.checkoutForm.value['height'] : animal.height),
+      healthCondition: this.checkoutForm.value['healthCondition']? this.checkoutForm.value['healthCondition'] : animal.healthCondition,
+      lastVisit: this.checkoutForm.value['lastVisit'] ? new Date(this.checkoutForm.value['lastVisit'].slice(0, 10)) : animal.lastVisit,
+      notes: this.checkoutForm.value['notes']? this.checkoutForm.value['notes'] : animal.notes,
+      picture: this.checkoutForm.value['picture']? this.checkoutForm.value['picture'] : animal.picture,
+    }
+
+    // Send request to update the animal
+    this.animalService.updateAnimal(this.selectedAnimal)
+      .subscribe({
+        next: response => {
+          console.log("Modifications enregistrées avec succès :", response);
+          this.submitted = true;
+          // Réinitialiser la sélection de l'animal après l'enregistrement
+          this.selectedAnimal = undefined;
+        },
+        error: error => {
+          console.log("Erreur lors de l'enregistrement des modifications :", error);
+          // Gérer l'erreur ici
+        }
+      });
+  }
+
   deleteAnimal(animalId: number | undefined) {
 
     if (typeof animalId === 'number') {
       console.log('Deleting animal with id:'+ animalId);
-      console.log(`http://localhost:8080/api/owners/deleteAnimal/${animalId}`);
+
       this.http.delete(`http://localhost:8080/api/owners/deleteAnimal/${animalId}`)
         .subscribe(
 
           response => {
             // Handle successful appointment deletion
             // Remove the appointment from the tempAppointments array
-            this.tempAppointments = this.tempAppointments.filter(a => a.id !== animalId);
+            this.tempAnimals = this.tempAnimals.filter(a => a.id !== animalId);
             console.log('Animal deleted successfully:', response);
             alert('Animal supprimé avec succès!');
 
@@ -308,9 +367,33 @@ export class MesAnimauxComponent implements OnInit{
 
       console.error('Error deleting animal: Animal ID is undefined.');
     }
-
-
   }
+
+  updateAnimal(animal: Animal): void {
+
+    console.log("Animal ID : " + animal.id);
+    console.log("Animal owner : " + animal.owner);
+
+    if (!animal.id) {
+      console.error("Animal ID not defined.");
+      return;
+    }
+    this.selectedAnimal  = animal;
+
+    this.animalService.updateAnimal(this.selectedAnimal)
+      .subscribe({
+        next: (response: any) => {
+          console.log("Animal successfully updated :", response);
+          this.submitted = true;
+
+        },
+        error: (error: any) => {
+          console.log("Error while updating animal :", error);
+          // Gérer l'erreur ici
+        }
+      });
+  }
+
 
   onSubmitAppointment() {
 
@@ -321,8 +404,10 @@ export class MesAnimauxComponent implements OnInit{
       appointmentNotes: this.checkoutForm.value['appointmentNotes'],
       appointmentType: this.checkoutForm.value['appointmentType'],
       appointmentLocation: this.checkoutForm.value['appointmentLocation'],
-      emailOwner: this.currentUserEmail
+      ownerId: this.ownerId,
     };
+
+    console.log("Appointment ownerId: "+ appointmentData.ownerId);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 

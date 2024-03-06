@@ -30,6 +30,17 @@ export class AnimalService {
     );
   }
 
+  updateAnimal(animal: Animal): Observable<Animal> {
+    return this.http.put<Animal>(`${this.animalsUrl}/update/${animal.id}`, animal);
+  }
+
+  getAnimalById(animalId: number): Observable<Animal> {
+    const url = `${this.animalsUrl}/animals/${animalId}`;
+    return this.http.get<Animal>(url).pipe(
+      map(data => this.deserializeAnimal(data))
+    );
+  }
+
   private deserializeAnimal(data: any): Animal {
     return new AnimalModel(
       data.id,

@@ -86,23 +86,35 @@ public class OwnerController {
     }
 
     // Update a user
-    @PutMapping("/{id}")
-    public ResponseEntity<Owner> updateOwner(@PathVariable(value = "id") Long ownerId,
-                                             @RequestBody Owner ownerDetails) {
-        Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("Owner not found for this id :: " + ownerId));
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    @RequestMapping(value = "/update/{id}",
+            produces = "application/json",
+            method=RequestMethod.PUT)
+    @Transactional
+    public ResponseEntity<Owner> updateOwner(@RequestBody Owner owner,
+                                               RedirectAttributes redirectAttributes) {
 
-        owner.setFirstName(ownerDetails.getFirstName());
-        owner.setLastName(ownerDetails.getLastName());
-        owner.setEmail(ownerDetails.getEmail());
-        owner.setNoTel(ownerDetails.getNoTel());
-        owner.setPassword(ownerDetails.getPassword());
-        owner.setRole(ownerDetails.getRole());
-        // plus update for owners if needed
+        log.info("INSIDE updateOwner method");
+        log.info("Received owner data: " + owner.toString() );
 
-        final Owner updatedOwner = ownerRepository.save(owner);
-        return ResponseEntity.ok(updatedOwner);
+
+        // Verification of the existence of the Owner
+        Optional<Owner> existingOwnerOpt = ownerService.getOwnerById(owner.getId());
+        if (!existingOwnerOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("error", "Owner avec le id" + owner.getId() + " non trouvé.");
+            log.info("ERROR: " + "Owner avec le id" + owner.getId() + " non trouvé.");
+            return ResponseEntity.badRequest().build();
+        }
+
+        Owner existingOwner = existingOwnerOpt.get();
+
+        // Update Owner info
+        ownerService.updateOwner(owner);
+        log.info("Successfully updated owner data: " + owner.toString() );
+
+        return ResponseEntity.created(URI.create("" + owner.getId())).body(owner);
     }
+
 
     // Delete a user
     @DeleteMapping("/owners/{id}")
@@ -176,40 +188,8 @@ public class OwnerController {
         }
     }
 
+    // Delete an animal
     @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
-    @RequestMapping(value = "/updateAnimalProfile", produces = "application/json",
-            method=RequestMethod.PUT)
-    @Transactional
-    public ResponseEntity<Animal> updateAnimalProfile(@ModelAttribute("animal") Animal animal,
-                                       @RequestParam Map<String, String> allParams,
-                                       // Authentication authentication
-                                        RedirectAttributes redirectAttributes) {
-
-        log.info("Inside updateAnimalProfile controller methode." );
-        log.info("Received animal data: " + animal.getId() + " " + animal.getName() + " " + animal.getRace() + " " + animal.getBirthday() + " " + animal.getWeight() + " " + animal.getHeight() + " " + animal.getHealthCondition() + " " + animal.getLastVisit() + " " + animal.getNotes() + " " + animal.getPicture());
-
-        // Vérification de l'existence de l'animal
-        Optional<Animal> existingAnimalOpt = animalService.getAnimalById(animal.getId());
-        if (!existingAnimalOpt.isPresent()) {
-            redirectAttributes.addFlashAttribute("error", "Animal with id " + animal.getId() + " not found.");
-            return ResponseEntity.badRequest().build();
-        }
-
-        Animal existingAnimal = existingAnimalOpt.get();
-
-        // Mise à jour des informations de base du patient
-        animalService.updateAnimal(animal);
-
-        // Sauvegarder les modifications
-        animalService.updateAnimal(existingAnimal);
-
-        redirectAttributes.addFlashAttribute("success", "Profil de l'animal mis à jour avec succès.");
-        return ResponseEntity.created(URI.create("/updateAnimalProfile/" + animal.getId())).body(animal);
-    }
-
-    // Cancel an appointment
-    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
-    //@GetMapping("/cancelAppointment/{id}")
     @RequestMapping(value = "/deleteAnimal/{id}",
             produces = "application/json",
             method=RequestMethod.DELETE)
@@ -241,7 +221,7 @@ public class OwnerController {
             RedirectAttributes redirectAttributes) {
 
         log.info("Inside bookAppointment controller methode." );
-        log.info("Received appointment data: " + appointmentData.getAnimalId() + " " + appointmentData.getAppointmentDateTime() + " " + appointmentData.getAppointmentNotes() + " " + appointmentData.getAppointmentType() + " " + appointmentData.getAppointmentLocation() + " " + appointmentData.getEmailOwner());
+        log.info("Received appointment data: " + appointmentData.getOwnerId() + " " + appointmentData.getAppointmentDateTime() + " " + appointmentData.getAppointmentNotes() + " " + appointmentData.getAppointmentType() + " " + appointmentData.getAppointmentLocation() + " " + appointmentData.getAnimalId());
 
         try {
 
@@ -249,7 +229,7 @@ public class OwnerController {
             // Get the owner
             // String email = authentication.getName();
 
-            Owner owner = ownerService.getOwnerByEmail(appointmentData.getEmailOwner())
+            Owner owner = ownerService.getOwnerById(appointmentData.getOwnerId())
                     .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
 
             log.info("owner" + owner);
@@ -282,7 +262,7 @@ public class OwnerController {
 
             // Manage errors
             redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de l'enregistrement du rendez-vous : " + e.getMessage());
-
+            log.info("Erreur lors de l'enregistrement du rendez-vous : " + e.getMessage());
             return ResponseEntity.badRequest().build();
 
         }

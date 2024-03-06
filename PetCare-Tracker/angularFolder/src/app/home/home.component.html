@@ -1,0 +1,104 @@
+<body>
+
+
+
+<div class="container-l m-5 p-4 fond">
+
+  <!-- Rangée des boutons de connexion-->
+  <ul class="nav justify-content-end mb-5">
+    <li class="nav-item">
+      <!-- Bouton pour ouvrir le modal de création de compte -->
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="add-owner" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Créer un compte</a>
+    </li>
+    <li class="nav-item">
+      <!-- Bouton pour ouvrir le modal de connexion -->
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Se connecter</a>
+    </li>
+
+
+    <!-- Bouton temporaire pour la vue administrateur -->
+    <li class="nav-item">
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">ADMIN</a>
+    </li>
+
+  </ul>
+
+
+  <div class="row">
+    <!-- Colonne du logo -->
+    <div class="col-lg-4 text-center">
+      <img id="logoPetCare" src="../assets/images/logo_PetCare_NoBackground.png" alt="logoPetCare"
+           style="max-width: 100%; height: auto;">
+      <p class="paragraphe-logo">Au coeur du bien-être animal</p>
+    </div>
+
+
+    <!-- Colonne pour les boîtes du haut -->
+    <div class="col-lg-8">
+      <div class="row">
+        <!--  Boîte du haut centre -->
+        <div class="col mb-3">
+          <div class="card text-center" style="height: 300px;">
+            <img class="santePetCare mx-auto d-block mt-4" src="../assets/images/santé_animal.png"
+                 alt="santePetCare" style="height: 30%">
+            <div class="card-body">
+              <p class="card-text">Gestion complète de la santé</p>
+              <p class="card-text-gris">Suivez les vaccinations,
+                les visites vétérinaires et les traitements médicaux de vos animaux
+                grâce à un calendrier personnalisé.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boîte du haut droite -->
+        <div class="col">
+          <div class="card text-center" style="height: 300px;">
+            <img class="rdvPetCare mx-auto d-block mt-4" src="../assets/images/rendez-vous.png"
+                 alt="rendez-vous PetCare" style="height: 30%">
+            <div class="card-body">
+              <p class="card-text">Profils personnalisés des animaux</p>
+              <p class="card-text-gris">Créez des profils uniques pour chaque animal,
+                incluant des détails sur leur nutrition, santé et besoins d'activité.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deuxième rangée pour les boîtes du bas -->
+      <div class="row">
+        <!-- Boîte du bas centre -->
+        <div class="col">
+
+          <div class="card text-center" style="height: 300px;">
+            <img class="ideePetCare mx-auto d-block mt-4" src="../assets/images/idee.png" alt="idée PetCare"
+                 style="height: 30%">
+            <div class="card-body">
+              <p class="card-text">Conseils quotidien sur mesure</p>
+              <p class="card-text-gris">Recevez des suggestions personnalisées pour le soin quotidien
+                de vos animaux, basées sur leurs profils individuels.</p>
+            </div>
+          </div>
+        </div>
+
+        <!--  Boîte du bas droite -->
+        <div class="col">
+          <div class="card text-center" style="height: 300px;">
+            <img class="securitePetCare mx-auto d-block mt-4" src="../assets/images/sécurité.png"
+                 alt="sécurité PetCare" style="height: 30%">
+            <div class="card-body">
+              <p class="card-text">Sécurité et facilité d'utilisation</p>
+              <p class="card-text-gris">Inscrivez-vous facilement et gérez vos informations
+                en toute sécurité pour une expérience utilisateur fluide et sécurisée.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+

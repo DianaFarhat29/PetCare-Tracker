@@ -31,7 +31,7 @@ public class Owner {
     @Column(nullable = false)
     private String role;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     @JoinTable(
             name = "owner_animal",
@@ -123,6 +123,7 @@ public class Owner {
 
     // Method toString()
 
+
     @Override
     public String toString() {
         return "Owner{" +
@@ -130,6 +131,10 @@ public class Owner {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", noTel='" + noTel + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", animals=" + animals +
                 '}';
     }
 

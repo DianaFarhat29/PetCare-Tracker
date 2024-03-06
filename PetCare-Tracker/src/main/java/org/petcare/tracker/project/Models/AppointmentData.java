@@ -10,16 +10,16 @@ public class AppointmentData {
     private String appointmentNotes;
     private String appointmentType;
     private String appointmentLocation;
-    private String emailOwner;
+    private Long ownerId;
 
     // Constructors
-    public AppointmentData(Long animalId, String appointmentDateTime, String appointmentNotes, String appointmentType, String appointmentLocation, String emailOwner) {
+    public AppointmentData(Long animalId, String appointmentDateTime, String appointmentNotes, String appointmentType, String appointmentLocation, Long ownerId) {
         this.animalId = animalId;
         this.appointmentDateTime = appointmentDateTime;
         this.appointmentNotes = appointmentNotes;
         this.appointmentType = appointmentType;
         this.appointmentLocation = appointmentLocation;
-        this.emailOwner = emailOwner;
+        this.ownerId = ownerId;
     }
 
     // Getters and setters
@@ -63,12 +63,12 @@ public class AppointmentData {
         this.appointmentLocation = appointmentLocation;
     }
 
-    public String getEmailOwner() {
-        return emailOwner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setEmailOwner(String emailOwner) {
-        this.emailOwner = emailOwner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     // Method toString
@@ -82,7 +82,7 @@ public class AppointmentData {
                 ", appointmentNotes='" + appointmentNotes + '\'' +
                 ", appointmentType='" + appointmentType + '\'' +
                 ", appointmentLocation='" + appointmentLocation + '\'' +
-                ", emailOwner='" + emailOwner + '\'' +
+                ", ownerId='" + ownerId + '\'' +
                 '}';
     }
 }

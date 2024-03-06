@@ -68,9 +68,14 @@ public class PetCareTrackerProjectApplication {
         return args -> {
 
             Stream.of(
-                    new Animal( null, Collections.singleton(owner2), "Fluffy", "Siamese", "Female", LocalDate.of(2020, 2, 15), 3.5, 25.0, null, null, "Likes tuna treats", null),
-                    new Animal(null, Collections.singleton(owner2), "Max", "Golden Retriever", "Male", LocalDate.of(2018, 8, 4), 35.0, 60.0, "Allergies", LocalDate.of(2023, 11, 20), null, null),
-                    new Animal(null, Collections.singleton(owner2), "Daisy", "Poodle", "Female", LocalDate.of(2022, 5, 29), 6.0, 30.0, null, LocalDate.of(2024, 1, 12), "Recently groomed", null)
+                    new Animal( null, Collections.singleton(owner2), "Fluffy", "Siamese", "Female", LocalDate.of(2020, 2, 15), 3.5, 25.0, null, null, "Likes tuna treats", "../assets/images/patte.png"),
+                    new Animal(null, Collections.singleton(owner2), "Max", "Golden Retriever", "Male", LocalDate.of(2018, 8, 4), 35.0, 60.0, "Allergies", LocalDate.of(2023, 11, 20), null, "../assets/images/patte.png"),
+                    new Animal(null, Collections.singleton(owner2), "Daisy", "Poodle", "Female", LocalDate.of(2022, 5, 29), 6.0, 30.0, null, LocalDate.of(2024, 1, 12), "Recently groomed", "../assets/images/patte.png"),
+                    new Animal( null, Collections.singleton(owner2), "Fluffy", "Siamese", "Female", LocalDate.of(2020, 2, 15), 3.5, 25.0, null, null, "Likes tuna treats", "../assets/images/patte.png"),
+                    new Animal( null, Collections.singleton(owner2), "Fluffy", "Siamese", "Female", LocalDate.of(2020, 2, 15), 3.5, 25.0, null, null, "Likes tuna treats", "../assets/images/patte.png"),
+                    new Animal( null, Collections.singleton(owner2), "Fluffy", "Siamese", "Female", LocalDate.of(2020, 2, 15), 3.5, 25.0, null, null, "Likes tuna treats", "../assets/images/patte.png")
+
+
             ).forEach(animal -> animalController.addAnimal(animal, List.of(2L)));
         };
     }

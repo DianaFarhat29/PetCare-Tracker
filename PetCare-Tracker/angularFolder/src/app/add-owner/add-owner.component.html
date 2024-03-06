@@ -1,0 +1,34 @@
+<div class="container mt-3">
+  <h2>Ajouter un nouvel utilisateur</h2>
+
+
+
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div>
+      <label for="firstName">Prénom:</label>
+      <input type="text" id="firstName" [(ngModel)]="owner.firstName" name="firstName" required>
+    </div>
+    <div>
+      <label for="lastName">Nom:</label>
+      <input type="text" id="lastName" [(ngModel)]="owner.lastName" name="lastName" required>
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="owner.email" name="email" required>
+    </div>
+    <div>
+      <label for="noTel">Numéro de Téléphone:</label>
+      <input type="text" id="noTel" [(ngModel)]="owner.noTel" name="noTel" required>
+    </div>
+    <div>
+      <label for="password">Mot de passe:</label>
+      <input type="password" id="password" [(ngModel)]="owner.password" name="password" required>
+    </div>
+    <div>
+      <label for="role">Rôle:</label>
+      <input type="text" id="role" [(ngModel)]="owner.role" name="role" required>
+    </div>
+    <button type="submit">Ajouter</button>
+  </form>
+
+</div>

@@ -1,0 +1,134 @@
+<nav class="navbar navbar-expand-lg navbar-light border-bottom border-2">
+  <a class="navbar-brand p-left-2">
+    <img
+      src="..\assets\images\logo_PetCare_NoBackground.png"
+      width="65"
+      height="auto"
+      alt=""
+    />
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse half-width" id="collapsibleNavbar">
+    <div class="navbar-nav ms-auto w-50 p-right-2">
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/tableau-de-bord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tableau de bord</a>
+      <a class="nav-item nav-link nav-link-spacing w-25 text-nowrap text-center" routerLink="/mes-animaux" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mes animaux</a>
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/mon-compte" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mon compte</a>
+      <a class="nav-item nav-link w-25 text-center" routerLink="/quitter" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Quitter</a>
+    </div>
+  </div>
+</nav>
+
+<div class="col w-50 h-100 ms-5" >
+  <h3 class="border-bottom w-50 pt-5">Mon compte</h3>
+  <div class="row h-75 mb-5 bg-primary rounded-2 shadow-sm">
+    <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
+
+      <!--------------------------------- FORM --------------------------------->
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(selectedOwner)">
+        <div class="d-flex flex-column gap-4">
+
+          <div class="d-flex flex-row">
+            <div
+              class="bg-white flex-grow-1 rounded-2 shadow-sm p-4 align-items-center justify-content-between col">
+              <div class="d-flex flex-column justify-content-center gap-3">
+
+                <div class="row align-items-center">
+                  <label for="firstName" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Prénom:</label>
+                  <div class="col-sm-8 ">
+                    <input type="text" id="firstName" class="form-control" placeholder="" formControlName="firstName" [value]="selectedOwner?.firstName">
+                  </div>
+                </div>
+
+                <div class="row align-items-center">
+                  <label for="lastName" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Nom:</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="lastName" class="form-control" placeholder="" formControlName="lastName" [value]="selectedOwner?.lastName"
+                           >
+                  </div>
+                </div>
+
+                <div class="row align-items-center">
+                  <label for="email" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Courriel:</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="email" class="form-control" placeholder="" formControlName="email" [value]="selectedOwner?.email"
+                           >
+                  </div>
+                </div>
+
+                <div class="row align-items-center">
+                  <label for="noTel" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Numéro de téléphone:</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="noTel" class="form-control" placeholder="" formControlName="noTel" [value]="selectedOwner?.noTel"
+                           >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row gap-2 w-100 pt-2">
+            <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="onEditButtonClick()">Modifier</button>
+            <button class="btn bouton-voir-plus flex-grow-1 " type="button" (click)="onSubmit(selectedOwner)">Sauvegarder</button>
+          </div>
+
+
+
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <h3 class="border-bottom w-50">Mon compte</h3>
+  <div class="row h-75 mb-5 bg-primary rounded-2 shadow-sm">
+    <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
+
+      <!--------------------------------- FORM --------------------------------->
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(selectedOwner)">
+        <div class="d-flex flex-column gap-4">
+
+          <div class="d-flex flex-row">
+            <div
+              class="bg-white flex-grow-1 rounded-2 shadow-sm p-4 align-items-center justify-content-between col">
+              <div class="d-flex flex-column justify-content-center gap-3">
+
+                <div class="row align-items-center">
+                  <label for="password" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Mot de passe actuel:</label>
+                  <div class="col-sm-8 ">
+                    <input type="text" id="password" class="form-control" placeholder="" formControlName="password">
+                  </div>
+                </div>
+
+                <div class="row align-items-center">
+                  <label for="newPassword" class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Nouveau mot de passe:</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="newPassword" class="form-control" placeholder="" formControlName="newPassword"
+                    >
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row gap-2 w-100 pt-2">
+            <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="onEditButtonClick()">Modifier mon mot de passe</button>
+            <button class="btn bouton-voir-plus flex-grow-1 " type="button">Annuler</button>
+          </div>
+
+
+
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+  <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="deleteOwner(selectedOwner?.id)">Supprimer mon compte</button>
+</div>

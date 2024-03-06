@@ -1,3 +1,25 @@
+<nav class="navbar navbar-expand-lg navbar-light border-bottom border-2">
+  <a class="navbar-brand p-left-2">
+    <img
+      src="..\assets\images\logo_PetCare_NoBackground.png"
+      width="65"
+      height="auto"
+      alt=""
+    />
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse half-width" id="collapsibleNavbar">
+    <div class="navbar-nav ms-auto w-50 p-right-2">
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/tableau-de-bord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tableau de bord</a>
+      <a class="nav-item nav-link nav-link-spacing w-25 text-nowrap text-center" routerLink="/mes-animaux" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mes animaux</a>
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/mon-compte" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mon compte</a>
+      <a class="nav-item nav-link w-25 text-center" routerLink="/quitter" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Quitter</a>
+    </div>
+  </div>
+</nav>
+
 <main class=" container-fluid my-5">
   <div class="row ">
       <!-- Colonne de gauche -->
@@ -18,7 +40,7 @@
                   <h5 class="m-0">{{ animal.name }}</h5>
                   <p class="m-0 text-gray-custom">{{ animal.race }}</p>
                 </div>
-                <button class="btn bouton-voir-plus">Voir plus</button>
+                <button class="btn bouton-voir-plus" (click)="onClickVoirPlus(animal)">Voir plus</button>
               </div>
             </div>
           </div>
@@ -28,7 +50,7 @@
         <div class="row h-25">
         <h3 class="border-bottom w-50">Conseils du jour</h3>
         <div class="bg-primary p-4 ">
- 
+
           <mdb-carousel [controls]="true" [animation]="'slide'" [indicators]="true" play >
             <mdb-carousel-item class=" bg-white rounded-2 shadow-sm text-center p-5">
                 <img src="..\assets\images\idee.png" width="50" height="auto" alt="" />
@@ -57,22 +79,51 @@
           <!-- À venir -->
           <div class="row mb-5">
             <h3 class="border-bottom w-50">À venir</h3>
-            <div class="bg-primary h-75 w-100 rounded-2 shadow-sm">
-              <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
+            <div class="bg-primary w-100 rounded-2 shadow-sm">
+              <div class="bg-primary h-100 w-100 rounded-2 p-4">
                 <!-- Affichage évènement -->
-                <div class="bg-white rounded-2 row w-100 d-flex gap-1 align-items-center p-3">
-                  <!-- Colonne pour l'image -->
-                  <div class="col-auto">
-                    <img src="..\assets\images\horloge.png" width="40" height="auto" />
+                <ng-container *ngIf="!hasAnyAppointments()">
+                  <div class="bg-white alert alert-info text-center ">
+                    Aucun rendez-vous à venir pour vos animaux!
                   </div>
+                </ng-container>
 
-                  <!-- Colonne pour le texte -->
-                  <div class="col p-0">
-                    <p class="mb-1 fw-semi-bold">Rendez-vous au vétérinaire - 31 janvier 2024</p>
-                    <p class="m-0"><span class="text-gray-custom">Compagnon concerné: </span><span
-                        class="fw-semi-bold">Sky</span></p>
+                <ng-container *ngIf="animals">
+                  <div *ngFor="let animal of animals">
+                    <ng-container *ngIf="getAppointmentsForAnimal(animal.id).length > 0">
+                      <div class="h-100 w-100 rounded-2 p-4 d-flex flex-column gap-3 ">
+                        <ng-container *ngIf="appointments">
+                          <div *ngFor="let appointment of getAppointmentsForAnimal(animal.id)"  class="bg-white rounded-2 shadow-sm d-flex align-items-center p-3 gap-2 w-100">
+                            <ng-container *ngIf="appointment.animal.id === animal.id">
+                              <div class="col-auto">
+                                <img src="..\assets\images\horloge.png" width="40" height="auto" />
+                              </div>
+
+                              <div class="flex-grow-1 p-0 ">
+                                <p class="mb-1 fw-semi-bold">{{ appointment.type }}</p>
+                                <p class="text-muted mb-0 fs-sm">{{ appointment.dateTime | date:'mediumDate' }}</p>
+                                <p class="text-muted mb-0 fs-sm">Animal concerné: <span class="text-black">{{ animal.name }}</span></p>
+                                <ng-container *ngIf="showAppointmentDetails && appointment === selectedAppointment">
+                                  <p class="text-muted mb-0 fs-sm ">Lieu: <span class="text-black">{{ appointment.location }}</span></p>
+                                  <p class="text-muted mb-0 fs-sm">Notes: <span class="text-black">{{ appointment.notes }}</span></p>
+                                </ng-container>
+                                <button class="m-0 p-0 text-custom-blue btn btn-link text-custom-blue" style="background-color:transparent; border-color:transparent" (click)="toggleAppointmentDetails(appointment)">
+                                  <p class="text-muted mb-0 fs-sm text-custom-blue">
+                                    {{ showAppointmentDetails && appointment === selectedAppointment ? 'Diminuer' : 'Détails' }}
+                                  </p>
+                                </button>
+
+                              </div>
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+
+
+
                   </div>
-                </div>
+                </ng-container>
               </div>
             </div>
           </div>

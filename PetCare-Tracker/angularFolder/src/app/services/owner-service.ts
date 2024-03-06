@@ -27,9 +27,8 @@ export class OwnerService {
   }
 
 
-  updateOwner(id: number, owner: Owner): Observable<Owner> {
-    const headers = new HttpHeaders({'Content-type': 'application/json'});
-    return this.httpClient.put<Owner>(`${this.apiUrl}/${id}`, owner, {headers});
+  updateOwner(owner: Owner): Observable<Owner> {
+    return this.httpClient.put<Owner>(`http://localhost:8080/api/owners/update/${owner.id}`, owner);
   }
 
   deleteOwner(id: number): Observable<any> {

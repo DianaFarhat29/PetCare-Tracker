@@ -6,5 +6,4 @@ export interface Owner {
   noTel: string;
   password: string;
   role: string;
-  animals:  Set<number>;
 }

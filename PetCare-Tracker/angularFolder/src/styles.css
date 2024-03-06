@@ -78,23 +78,25 @@ main {
   height:110px;
 }
 
-.bouton-voir-plus {
-  background-color: #33d4de;
-  color:white;
-}
 
 .bouton-voir-plus:hover {
   background-color: #77818e;
   color:white;
 }
 
-.bouton-ajouter-compagnon {
-  width: 94% !important; 
-}
 
 .fixed-size-textarea {
   resize: none;
 }
+
+.text-custom-blue {
+  color: #33d4de !important;
+}
+
+.fs-sm {
+  font-size: 0.9rem;
+}
+
 
 /* Calendrier */
 
@@ -202,7 +204,7 @@ header .current-date{
 
 .fc-toolbar-title {
   color:#33d4de;
-  text-transform: capitalize; 
+  text-transform: capitalize;
 }
 
 .fc-prev-button, .fc-next-button {
@@ -281,12 +283,14 @@ header .current-date{
 /* Mes animaux */
 
 .list-animals-2 {
+  height:750px !important;
   overflow-y:scroll;
   scrollbar-width: thin;
   scrollbar-color: #33D4DE #E0F8F9 ;
   display:flex;
   flex-direction:column;
   gap:1rem;
+  padding-right:1rem;
 }
 
 #age {
@@ -294,3 +298,21 @@ header .current-date{
   border:none;
   text-align: center;
 }@import 'mdb-angular-ui-kit/assets/scss/mdb.scss';
+
+.animal-details {
+  height:880px !important;
+  position:absolute;
+}
+
+.bouton-ajouter-animal {
+  display: flex;
+  justify-content:center;
+
+  position: absolute;
+  bottom:0;
+}
+
+.bouton-voir-plus {
+  background-color: #33d4de;
+  color:white;
+}

@@ -9,7 +9,6 @@ export class OwnerModel implements Owner {
   public noTel: string,
   public password: string,
   public role: string ,
-  public animals:  Set<number>
   ) {}
 
 }

@@ -1,11 +1,33 @@
-<main class=" container-fluid my-5 ">
-    <div class="row ">
+<nav class="navbar navbar-expand-lg navbar-light border-bottom border-2">
+  <a class="navbar-brand p-left-2">
+    <img
+      src="..\assets\images\logo_PetCare_NoBackground.png"
+      width="65"
+      height="auto"
+      alt=""
+    />
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse half-width" id="collapsibleNavbar">
+    <div class="navbar-nav ms-auto w-50 p-right-2">
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/tableau-de-bord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tableau de bord</a>
+      <a class="nav-item nav-link nav-link-spacing w-25 text-nowrap text-center" routerLink="/mes-animaux" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mes animaux</a>
+      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/mon-compte" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mon compte</a>
+      <a class="nav-item nav-link w-25 text-center" routerLink="/quitter" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Quitter</a>
+    </div>
+  </div>
+</nav>
 
-        <div class="col d-flex mb-5">
+<main class=" container-fluid my-5">
+  <div class="row w-100">
+        <div class="col mb-5 h-75 w-50 ">
                 <!-- Colonne de gauche : Mes animaux -->
-                <div class="row flex-grow-1 mb-5 ">
+
                     <h3 class="border-bottom w-50">Mes animaux</h3>
-                    <div class="h-100 bg-primary rounded-2 shadow-sm p-4 position-relative list-animals-2">
+                    <div class=" bg-primary rounded-2 shadow-sm p-4  animal-details position-relative" >
+                      <div class="list-animals-2 ">
 
                             <!-- Affichage compagnon -->
                         <div class="d-flex " *ngFor="let animal of animals">
@@ -21,23 +43,25 @@
                             <button class="btn bouton-voir-plus" (click)="showAnimalDetails(animal)">Détails</button>
                           </div>
                         </div>
-                            <button class="btn bouton-voir-plus m-auto mb-4 bouton-ajouter-compagnon position-absolute bottom-0" (click)="clearInputsAndEnable()">Ajouter un compagnon</button>
-                        </div>
-                    </div>
+                  </div>
+                  <div class="bouton-ajouter-animal w-100">
+                  <button class="btn bouton-voir-plus btn-bouton-plus   mb-4  "  (click)="clearInputsAndEnable()">Ajouter un compagnon</button>
+                  </div>
+</div>
         </div>
 
         <!-- Colonne de droite : fiche détaillée -->
-        <div class="col w-50 h-100 ms-5" >
+        <div class="col h-75 ms-3  w-50 " >
             <h3 class="border-bottom w-50">Fiche détaillée</h3>
-            <div class="row h-75 mb-5 bg-primary rounded-2 shadow-sm">
-                <div class="bg-primary h-100 w-100 rounded-2 p-4 ">
+            <div class="row mb-5 bg-primary rounded-2 shadow-sm  p-4 animal-details ">
+
 
                   <!--------------------------------- FORM --------------------------------->
                   <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
                     <div class="d-flex flex-column gap-4">
 
-                        <div class="d-flex flex-row">
-                            <div class="bg-white shadow-sm mx-2 big-square rounded-2">
+                        <div class="d-flex flex-md-row gap-2">
+                            <div class="bg-white shadow-sm  big-square rounded-2 ">
                               <img [src]="selectedAnimal?.picture ? selectedAnimal?.picture : '../assets/images/patte.png'" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
 
                             </div>
@@ -77,7 +101,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-2 shadow-sm p-4">
+                        <div class="bg-white rounded-2 shadow-sm p-4 ">
                             <div class="d-flex flex-column justify-content-center gap-3">
                                 <h5 class="m-0 text-center pb-2 m-2">Fiche santé</h5>
                                 <div class="d-flex flex-wrap gap-2 justify-content-between flex-column">
@@ -98,10 +122,6 @@
                                   </div>
                                 </div>
 
-
-
-
-
                                 <div class="row align-items-center">
                                             <label for="weight"
                                                 class="col-sm-4 col-form-label fw-semibold text-black text-nowrap">Poids:</label>
@@ -121,7 +141,6 @@
                                                        [disabled]="!isAddingAnimal">
                                             </div>
                                         </div>
-
 
 
                                         <div class="row align-items-center">
@@ -153,9 +172,9 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row gap-2 w-100 pt-2">
+                        <div class="d-flex flex-row gap-2 w-100 pt-2" *ngIf="selectedAnimal">
                             <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="onEditButtonClick()">Modifier</button>
-                            <button class="btn bouton-voir-plus flex-grow-1 " type="button">Sauvegarder</button>
+                            <button class="btn bouton-voir-plus flex-grow-1 " type="button" (click)="editAnimal(selectedAnimal)">Sauvegarder</button>
                           <button class="btn bouton-voir-plus flex-grow-1 " type="submit">Ajouter</button>
                             <button class="btn bouton-voir-plus  flex-grow-1 " type="button" (click)="deleteAnimal(selectedAnimal?.id)">Supprimer</button>
 
@@ -164,18 +183,13 @@
 
                     </div>
                   </form>
-
-
-
-
-                </div>
             </div>
         </div>
-    </div>
+
 
 
     <!-- Section rendez-vous -->
-    <div class="row ">
+    <div class="row w-100">
         <h3 class="border-bottom w-50">Ajout/Visualisation d'évènements</h3>
         <div class="bg-primary shadow-sm rounded-2 w-100">
             <div class="row justify-content-center p-4">
@@ -288,6 +302,16 @@
                             <div class="flex-grow-1 p-0 ">
                               <p class="mb-1 fw-semi-bold">{{ appointment.type }}</p>
                               <p class="text-muted mb-0">{{ appointment.dateTime | date:'mediumDate' }}</p>
+                              <p class="text-muted mb-0 fs-sm">Animal concerné: <span class="text-black">{{ animal.name }}</span></p>
+                              <ng-container *ngIf="showAppointmentDetails && appointment === selectedAppointment">
+                                <p class="text-muted mb-0 fs-sm ">Lieu: <span class="text-black">{{ appointment.location }}</span></p>
+                                <p class="text-muted mb-0 fs-sm">Notes: <span class="text-black">{{ appointment.notes }}</span></p>
+                              </ng-container>
+                              <button class="m-0 p-0 text-custom-blue btn btn-link text-custom-blue" style="background-color:transparent; border-color:transparent" (click)="toggleAppointmentDetails(appointment)">
+                                <p class="text-muted mb-0 fs-sm text-custom-blue">
+                                  {{ showAppointmentDetails && appointment === selectedAppointment ? 'Diminuer' : 'Détails' }}
+                                </p>
+                              </button>
                             </div>
 
                             <div class="ms-auto">
@@ -309,5 +333,5 @@
             </div>
         </div>
     </div>
-
+  </div>
 </main>
