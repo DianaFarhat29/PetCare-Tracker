@@ -11,7 +11,7 @@ export class OwnerService {
 
   private apiUrl= 'http://localhost:8080/api/owners/findAll';
 
-  constructor(private httpClient: HttpClient,) {}
+  constructor(private httpClient: HttpClient) {}
 
 
   getOwners(): Observable<Owner[]> {
@@ -23,9 +23,8 @@ export class OwnerService {
 
   addOwner(owner: Owner): Observable<Owner> {
     const headers = new HttpHeaders({'Content-type': 'application/json'})
-    return this.httpClient.post<Owner>(this.apiUrl, owner, {headers});
+    return this.httpClient.post<Owner>(`http://localhost:8080/api/owners/create`, owner, {headers});
   }
-
 
   updateOwner(owner: Owner): Observable<Owner> {
     return this.httpClient.put<Owner>(`http://localhost:8080/api/owners/update/${owner.id}`, owner);
@@ -35,7 +34,7 @@ export class OwnerService {
     return this.httpClient.delete(`${this.apiUrl}/owners/${id}`);
   }
 
-  getOwnerById(ownerId: number) {
+  getOwnerById(ownerId: number | undefined) {
     return this.httpClient.get<Owner>(`http://localhost:8080/api/owners/${ownerId}`);
   }
 }

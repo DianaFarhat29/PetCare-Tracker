@@ -15,7 +15,7 @@
       <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/tableau-de-bord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tableau de bord</a>
       <a class="nav-item nav-link nav-link-spacing w-25 text-nowrap text-center" routerLink="/mes-animaux" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mes animaux</a>
       <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/mon-compte" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mon compte</a>
-      <a class="nav-item nav-link w-25 text-center" routerLink="/quitter" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Quitter</a>
+      <a class="nav-item nav-link w-25 text-center" routerLinkActive="active" (click)="logout()" [routerLinkActiveOptions]="{exact: true}">Quitter</a>
     </div>
   </div>
 </nav>
@@ -49,7 +49,7 @@
             <!-- Conseils du jour -->
         <div class="row h-25">
         <h3 class="border-bottom w-50">Conseils du jour</h3>
-        <div class="bg-primary p-4 ">
+        <div class="bg-primary p-4 rounded-2 ">
 
           <mdb-carousel [controls]="true" [animation]="'slide'" [indicators]="true" play >
             <mdb-carousel-item class=" bg-white rounded-2 shadow-sm text-center p-5">

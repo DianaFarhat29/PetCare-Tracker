@@ -1,61 +1,64 @@
-import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
-import {Router} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {Owner} from "../owner";
+import {AuthService} from "../services/auth-service";
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  users: Owner[] = [];
-  //Déclarer un objet formulaire de type FormGroup
-  //Les données vont être stockées ici
-  userFormGroup!: FormGroup;
 
-  //injecter Modal et le FormBuilder dans le constructeur
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-    private router:Router
-  ) { }
 
 
-  //Créer un formGroup
   ngOnInit(): void {
-    this.userFormGroup = this.fb.group({
-      email: this.fb.control(""),
-      password: this.fb.control("")
+    let loginData =
+
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
-
-    // Charger les utilisateurs depuis le fichier JSON
-    //  this.connectionService.loadUsers().subscribe(users => {
-    //  this.users = users;
-    //});
+    if(this.authService.isLoggedIn()) {
+      console.log(localStorage.getItem('token'));
+      this.router.navigate(['/admin']);
+      }
   }
 
 
-  onSubmit() {
-    const formValue = this.userFormGroup.value;
-    const user = this.users.find(u => u.email === formValue.email && u.password === formValue.password);
-    if (user) {      // Traiter la connexion réussie
-      console.log('Connexion réussie', user);
-      this.router.navigate(['/suite']); // Utilisez la méthode navigate de Router
+  onSubmit(): void {
+    const loginData = {
+      email: this.loginForm.value['email'],
+      password: this.loginForm.value['password']
+    };
 
-
-    } else {       // Traiter l'échec de la connexion
-      console.log('Échec de la connexion');
-
-    }
-  }
-
-
-  close(): void {
-    const closeMessage = 'Modal closed';
+    this.authService.login(loginData.email, loginData.password).subscribe({
+      next: (response) => {
+        if (response.role === 'Admin') {
+          localStorage.setItem('role', 'Admin');
+          this.router.navigate(['/admin']);
+        } else if (response.role === 'Owner') {
+          localStorage.setItem('role', 'Owner');
+          this.router.navigate(['/tableau-de-bord']);
+        }
+      },
+      error: (error) => {
+        console.error('Erreur de connexion', error);
+        alert('Courriel/Mot de passe invalide. Veuillez réessayer.');
+      }
+    });
   }
 }

@@ -15,18 +15,18 @@
       <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/tableau-de-bord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tableau de bord</a>
       <a class="nav-item nav-link nav-link-spacing w-25 text-nowrap text-center" routerLink="/mes-animaux" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mes animaux</a>
       <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="/mon-compte" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mon compte</a>
-      <a class="nav-item nav-link w-25 text-center" routerLink="/quitter" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Quitter</a>
+      <a class="nav-item nav-link"  routerLinkActive="active" (click)="logout()" [routerLinkActiveOptions]="{exact: true}">Quitter</a>
     </div>
   </div>
 </nav>
 
 <main class=" container-fluid my-5">
-  <div class="row w-100">
-        <div class="col mb-5 h-75 w-50 ">
+  <div class="row flex-nowrap justify-content-center w-100 gap-2">
+        <div class=" mb-5 h-75  col-6  position-relative ">
                 <!-- Colonne de gauche : Mes animaux -->
 
                     <h3 class="border-bottom w-50">Mes animaux</h3>
-                    <div class=" bg-primary rounded-2 shadow-sm p-4  animal-details position-relative" >
+                    <div class=" bg-primary rounded-2 shadow-sm p-4  animal-details" >
                       <div class="list-animals-2 ">
 
                             <!-- Affichage compagnon -->
@@ -48,14 +48,14 @@
                           </div>
                         </div>
                   </div>
-                  <div class="bouton-ajouter-animal w-100">
-                  <button class="btn bouton-voir-plus btn-bouton-plus   mb-4  "  (click)="clearInputsAndEnable()">Ajouter un compagnon</button>
+                  <div class="justify-content-center  mt-4 w-100">
+                  <button class="btn bouton-voir-plus btn-bouton-plus w-100 mt-4 "  (click)="clearInputsAndEnable()">Ajouter un compagnon</button>
                   </div>
-</div>
+      </div>
         </div>
 
         <!-- Colonne de droite : fiche détaillée -->
-        <div class="col h-75 ms-3  w-50 " >
+        <div class=" h-75 col-6" >
             <h3 class="border-bottom w-50">Fiche détaillée</h3>
             <div class="row mb-5 bg-primary rounded-2 shadow-sm  p-4 animal-details ">
 
@@ -67,7 +67,6 @@
                         <div class="d-flex flex-md-row gap-2">
                             <div class="bg-white shadow-sm  big-square rounded-2 ">
                               <img [src]="selectedAnimal?.picture ? selectedAnimal?.picture : '../assets/images/patte.png'" alt="Image de l'animal" class="w-100 h-100 rounded-2 object-fit-cover">
-
                             </div>
                             <div
                                 class="bg-white flex-grow-1 rounded-2 shadow-sm p-4 align-items-center justify-content-between col">
@@ -201,7 +200,7 @@
             </div>
         </div>
 
-
+      </div>
 
     <!-- Section rendez-vous -->
     <div class="row w-100">
@@ -349,7 +348,7 @@
                 </ng-container>
               </div>
             </div>
-        </div>
+
     </div>
   </div>
 </main>

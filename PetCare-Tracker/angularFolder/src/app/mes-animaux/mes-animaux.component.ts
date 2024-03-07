@@ -7,8 +7,9 @@ import {AnimalModel } from '../animal-model';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {OwnerService} from "../services/owner-service";
 import {Appointment} from "../appointment";
-import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {OwnerModel} from "../owner-model";
+import {AuthService} from "../services/auth-service";
 
 
 @Component({
@@ -46,23 +47,19 @@ export class MesAnimauxComponent implements OnInit{
   isEditing: boolean = false;
   isAdding: boolean = false;
 
-  constructor(private animalService: AnimalService, private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder,) {}
+  constructor(private animalService: AnimalService, private authService: AuthService, private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit() {
-    const userId = 2; // Pour l'instant en dur
-    const url = 'http://localhost:8080/api/user/' + userId;
+    if(localStorage.getItem('role') !== 'Owner') {
+      this.router.navigate(['/']);
+    }
+
+    this.ownerId = (Number)(localStorage.getItem('userId'));
+    const url = 'http://localhost:8080/api/user/' + this.ownerId;
     this.animalService.findAll(url).subscribe(data => {
       this.animals = data;
 
-      if (data.length > 0) {
-        const ownerId = userId;  // Get the owner ID
-        this.ownerService.getOwnerById(ownerId).subscribe(owner => {
-          this.ownerId = ownerId;
-
-        });
-      }
-
-      this.http.get<Appointment[]>(`http://localhost:8080/api/owners/${userId}/appointments`)
+      this.http.get<Appointment[]>(`http://localhost:8080/api/owners/${this.ownerId}/appointments`)
         .subscribe(appointments => {
           this.tempAppointments = appointments;
         });
@@ -276,7 +273,7 @@ export class MesAnimauxComponent implements OnInit{
       healthCondition: this.checkoutForm.value['healthCondition'],
       lastVisit: this.checkoutForm.value['lastVisit'] ? new Date(this.checkoutForm.value['lastVisit'].slice(0, 10)) : null,
       notes: this.checkoutForm.value['notes'],
-      picture: this.checkoutForm.value['picture'],
+      picture: '../assets/images/patte.png',
     };
 
     console.log('owner: ' + animalData.owner);
@@ -305,6 +302,7 @@ export class MesAnimauxComponent implements OnInit{
   onEditButtonClick() {
     this.isEditing = true;
     this.isAdding = false;
+    this.checkoutForm.enable();
   }
 
   editAnimal(animal: Animal): void {
@@ -340,6 +338,7 @@ export class MesAnimauxComponent implements OnInit{
           // Réinitialiser la sélection de l'animal après l'enregistrement
           this.selectedAnimal = undefined;
           this.isEditing = false;
+          window.location.reload();
         },
         error: error => {
           console.log("Erreur lors de l'enregistrement des modifications :", error);
@@ -362,6 +361,7 @@ export class MesAnimauxComponent implements OnInit{
               this.tempAnimals = this.tempAnimals.filter(a => a.id !== animalId);
               console.log('Animal deleted successfully:', response);
               alert('Animal supprimé avec succès!');
+              window.location.reload();
 
             }, error => {
               // Handle the error
@@ -427,6 +427,7 @@ export class MesAnimauxComponent implements OnInit{
           console.log('Appointment created successfully:', response);
           alert('Rendez-vous enregistré avec succès!');
           this.checkoutForm.reset();
+          window.location.reload();
         },
         error => {
           // Handle errors during appointment creation
@@ -465,4 +466,10 @@ export class MesAnimauxComponent implements OnInit{
     this.isEditing = false;
     window.location.reload();
   }
+
+  logout() {
+    this.authService.logout();
+  }
 }
+
+

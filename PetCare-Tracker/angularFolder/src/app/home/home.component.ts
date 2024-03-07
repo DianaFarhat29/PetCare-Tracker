@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {RouterModule} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
+import {AnimalService} from "../services/animal-service";
+import {HttpClient} from "@angular/common/http";
 
 
 
@@ -19,5 +21,14 @@ import {RouterModule} from "@angular/router";
 
 export class HomeComponent {
 
+  constructor(private animalService: AnimalService, private http: HttpClient, private router: Router) {}
+
+  openCreateAccountDialog() {
+    this.router.navigate(['/add-owner']);
+  }
+
+  openLoginDialog() {
+    this.router.navigate(['/login']);
+  }
 
 }

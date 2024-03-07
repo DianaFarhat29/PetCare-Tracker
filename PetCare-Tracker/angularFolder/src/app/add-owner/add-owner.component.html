@@ -1,34 +1,33 @@
-<div class="container mt-3">
-  <h2>Ajouter un nouvel utilisateur</h2>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <h2>S'inscrire</h2>
+      <hr>
 
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="g-3">
 
+        <div class="form-group mb-3">
+          <input type="text" formControlName="firstName" class="form-control" placeholder="Prénom">
+        </div>
+        <div class="form-group mb-3">
+          <input type="text" formControlName="lastName" class="form-control" placeholder="Nom">
+        </div>
+        <div class="form-group mb-3">
+          <input type="email" formControlName="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group mb-3">
+          <input type="text" formControlName="noTel" class="form-control" placeholder="Numéro de Téléphone">
+        </div>
+        <div class="form-group mb-3">
+          <input type="password" formControlName="password" class="form-control" placeholder="Mot de passe">
+        </div>
 
-  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-    <div>
-      <label for="firstName">Prénom:</label>
-      <input type="text" id="firstName" [(ngModel)]="owner.firstName" name="firstName" required>
-    </div>
-    <div>
-      <label for="lastName">Nom:</label>
-      <input type="text" id="lastName" [(ngModel)]="owner.lastName" name="lastName" required>
-    </div>
-    <div>
-      <label for="email">Email:</label>
-      <input type="email" id="email" [(ngModel)]="owner.email" name="email" required>
-    </div>
-    <div>
-      <label for="noTel">Numéro de Téléphone:</label>
-      <input type="text" id="noTel" [(ngModel)]="owner.noTel" name="noTel" required>
-    </div>
-    <div>
-      <label for="password">Mot de passe:</label>
-      <input type="password" id="password" [(ngModel)]="owner.password" name="password" required>
-    </div>
-    <div>
-      <label for="role">Rôle:</label>
-      <input type="text" id="role" [(ngModel)]="owner.role" name="role" required>
-    </div>
-    <button type="submit">Ajouter</button>
-  </form>
+        <button class="btn btn-compte m-2" type="submit">S'inscrire</button>
+        <button class="btn btn-fermer m-2" routerLink='/home' routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Fermer</button>
 
+      </form>
+    </div>
+    <div class="col-3"></div>
+  </div>
 </div>

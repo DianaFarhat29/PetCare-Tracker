@@ -8,6 +8,7 @@ import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angula
 import {AnimalModel} from "../animal-model";
 import {OwnerModel} from "../owner-model";
 import {RouterLink, RouterLinkActive, Router} from "@angular/router";
+import {AuthService} from "../services/auth-service";
 
 @Component({
   selector: 'app-mon-compte',
@@ -23,17 +24,23 @@ export class MonCompteComponent {
   selectedOwner!: OwnerModel;
   public tempOwner: Owner[] = [];
   submitted = false;
+  isEditingInfo: boolean = false;
+  isEditingPassword: boolean = false;
+
+
+  constructor(private ownerService: OwnerService, private authService: AuthService,private http: HttpClient, private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit() {
-    const userId = 2; // Pour l'instant en dur
+    if(localStorage.getItem('role') !== 'Owner') {
+      this.router.navigate(['/']);
+    }
+    const userId = (Number)(localStorage.getItem('userId'));
     const url = 'http://localhost:8080/api/user/' + userId;
     this.ownerService.getOwnerById(userId).subscribe(data => {
       this.owner = data;
       this.selectedOwner = this.owner;
     });
   }
-
-  constructor(private ownerService: OwnerService, private http: HttpClient, private formBuilder: FormBuilder, private router: Router) {}
 
   checkoutForm = this.formBuilder.group({
     // Animal checkoutForm
@@ -50,10 +57,12 @@ export class MonCompteComponent {
 
   onEditButtonClick() {
     this.checkoutForm.enable();
+    this.isEditingInfo = true;
   }
 
   onEditPasswordButtonClick() {
     this.checkoutFormPassword.enable();
+    this.isEditingPassword = true;
   }
 
   deleteOwner(ownerId: number | undefined) {
@@ -165,6 +174,12 @@ export class MonCompteComponent {
   }
 
   cancel() {
+    this.isEditingInfo = false;
+    this.isEditingPassword = false;
     window.location.reload();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

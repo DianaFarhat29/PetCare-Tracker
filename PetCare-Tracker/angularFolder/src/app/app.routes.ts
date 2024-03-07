@@ -6,6 +6,7 @@ import {HomeComponent} from "./home/home.component";
 import {LoginComponent} from "./login/login.component";
 import {AddOwnerComponent} from "./add-owner/add-owner.component";
 import {AdminComponent} from "./admin/admin.component";
+import {AuthGuard} from "./auth.guard";
 
 
 export const routes: Routes = [

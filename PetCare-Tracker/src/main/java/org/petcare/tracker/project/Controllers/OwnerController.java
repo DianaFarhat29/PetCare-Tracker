@@ -64,12 +64,40 @@ public class OwnerController {
     //Create a new owner
     @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
     @Transactional
-    @PostMapping(value = "/create", produces = "application/json")
+    @RequestMapping(value = "/create",
+            produces = "application/json",
+            method=RequestMethod.POST)
+
     public Owner createOwner(@RequestBody Owner owner){
+
         log.info("Received owner data: " + owner);
         return ownerRepository.save(owner);
     }
 
+    // User login
+    @CrossOrigin(origins = "http://localhost:4200",allowCredentials = "true")
+    @Transactional
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+
+        Optional<Owner> ownerOpt = ownerRepository.findByEmail(email);
+
+        if(ownerOpt.isPresent() && ownerOpt.get().getPassword().equals(password)) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", ownerOpt.get().getId());
+            response.put("email", ownerOpt.get().getEmail());
+            response.put("role", ownerOpt.get().getRole());
+            return ResponseEntity.ok(response);
+        }
+        else {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe incorrect");
+
+        }
+    }
 
     @PutMapping
     public ResponseEntity<Owner> updateOwner(@RequestBody Owner owner) {

@@ -1,0 +1,40 @@
+body {
+  background-color: #33D4DE;
+  overflow-x: hidden;
+}
+
+.fond {
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 6em !important;
+}
+
+.btn-close {
+  background-color: white;
+  border-color: #33D4DE;
+  color: #686868;
+  width: 150px;
+}
+
+/* boutons de connexion/inscription en haut  */
+.btn-compte {
+  background-color: #33D4DE;
+  color: white;
+  width: 150px;
+}
+
+.btn-compte:hover {
+  background-color: #686868;
+  color: white;
+}
+
+.btn-fermer {
+  background-color: gray;
+  color: white;
+  width: 150px;
+}
+
+.btn-fermer:hover {
+  background-color: #686868;
+  color: white;
+}

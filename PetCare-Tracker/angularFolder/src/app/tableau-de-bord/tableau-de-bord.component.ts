@@ -12,6 +12,7 @@ import {AnimalService} from "../services/animal-service";
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import {Appointment} from "../appointment";
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
+import {AuthService} from "../services/auth-service";
 
 @Component({
   selector: 'app-tableau-de-bord',
@@ -45,10 +46,14 @@ export class TableauDeBordComponent implements OnInit{
   selectedAppointment: Appointment | null = null;
   showAppointmentDetails: boolean = false;
 
-  constructor(private animalService: AnimalService, private http: HttpClient, private router: Router) {}
+  constructor(private animalService: AnimalService, private authService: AuthService, private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
-    const userId = 2; // Pour l'instant en dur
+    if(localStorage.getItem('role') !== 'Owner') {
+      this.router.navigate(['/']);
+    }
+
+    const userId = (Number)(localStorage.getItem('userId'));
     const url = 'http://localhost:8080/api/user/' + userId;
     this.animalService.findAll(url).subscribe(data => {
       this.animals = data;
@@ -59,6 +64,12 @@ export class TableauDeBordComponent implements OnInit{
         this.tempAppointments = appointments;
       });
   }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
   onClickVoirPlus(animal: Animal) {
     this.router.navigate(['/mes-animaux'], { queryParams: { animalId: animal.id } });
   }
@@ -84,5 +95,7 @@ export class TableauDeBordComponent implements OnInit{
       this.showAppointmentDetails = true;
     }
   }
+
+
 
 }

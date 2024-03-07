@@ -1,32 +1,28 @@
-<div class="modal-content">
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-3"></div> <!-- Colonne vide -->
+    <div class="col-6">
+      <h2>Se connecter</h2>
+      <hr>
 
-  <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Se connecter</h5>
-    <button type="button" class="close" aria-label="Close" (click)="close()">X</button>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <input type="email" formControlName="email" class="form-control" placeholder="Courriel" autocomplete="email">
+        </div>
+        <div class="form-group mb-3">
+          <input type="password" formControlName="password" class="form-control"
+                 placeholder="Mot de passe" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-compte m-2">Se connecter</button>
+        <button class="btn btn-fermer m-2" routerLink='/home' routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Fermer</button>
+      </form>
+    </div>
+    <div class="col-3"></div>
   </div>
-
-  <div class="modal-body">
-    <!-- Formulaire de connection au compte -->
-    <form [formGroup]="userFormGroup" (ngSubmit)="onSubmit()">
-
-      <!-- Champs du formulaire -->
-      <div class="form-group">
-        <label for="email"></label>
-        <input type="email" class="form-control" id="email" placeholder="Votre adresse courriel"
-               formControlName="email">
-        <label for="password"></label>
-        <input type="password" class="form-control" id="password" placeholder="Votre mot de passe"
-               formControlName="password">
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="close()"> Fermer </button>
-        <button type="submit" class="btn btn-primary">Se connecter</button>
-      </div>
-
-    </form>
-  </div>
-
-
-
 </div>
+
+
+
+
+

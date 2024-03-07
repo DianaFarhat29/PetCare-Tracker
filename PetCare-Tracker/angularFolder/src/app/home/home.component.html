@@ -1,30 +1,20 @@
 <body>
-
-
-
-<div class="container-l m-5 p-4 fond">
-
+<div class="container-fluid p-4 fond mb-5">
   <!-- Rangée des boutons de connexion-->
   <ul class="nav justify-content-end mb-5">
     <li class="nav-item">
       <!-- Bouton pour ouvrir le modal de création de compte -->
-      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="add-owner" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Créer un compte</a>
+      <button class="btn btn-compte m-2" (click)="openCreateAccountDialog()">Créer un compte</button>
     </li>
     <li class="nav-item">
       <!-- Bouton pour ouvrir le modal de connexion -->
-      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Se connecter</a>
+      <button type="button" class="btn btn-compte m-2" (click)="openLoginDialog()">Se connecter</button>
     </li>
-
-
-    <!-- Bouton temporaire pour la vue administrateur -->
-    <li class="nav-item">
-      <a class="nav-item nav-link nav-link-spacing w-25 text-center" routerLink="admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">ADMIN</a>
-    </li>
-
+    
   </ul>
 
 
-  <div class="row">
+  <div class="row ">
     <!-- Colonne du logo -->
     <div class="col-lg-4 text-center">
       <img id="logoPetCare" src="../assets/images/logo_PetCare_NoBackground.png" alt="logoPetCare"
