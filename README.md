@@ -1,90 +1,86 @@
 # Introduction
 
-  Le projet "PetCare Tracker" est une application web transactionnelle asynchrone client-serveur développée dans le cadre du cours Applications Hypermédia II. Cette plateforme vise à aider les propriétaires d'animaux à suivre et gérer efficacement les soins de leurs animaux de compagnie.
+The "PetCare Tracker" project is a client-server asynchronous transactional web application developed as part of the Hypermedia Applications II course. This platform aims to help pet owners track and effectively manage their pets' care.
 
-# Fonctionnalités
+# Features
 
-  L'application offre plusieurs fonctionnalités clés :
+The application offers several key features:
 
-    -	Suivi des Vaccinations et des Soins de Santé:
-      
-      •	Calendrier personnalisé pour chaque animal avec rappels pour les vaccinations, visites vétérinaires et traitements médicaux.
-      •	Possibilité d’ajout d’évènements et de rendez-vous à une section de rappels de rendez-vous. La section de rappels offre l’option d’afficher tous les détails (animal concerné, type, date, lieu et notes) de chaque rendez-vous à venir. 
-    
-    -	Profils Personnalisés:
+- Tracking Vaccinations and Healthcare:
+
+    • Personalized calendar for each pet with reminders for vaccinations, veterinary visits, and medical treatments.
+    • Ability to add events and appointments to an appointment reminder section. The reminder section offers the option to display all the details (pet involved, type, date, location, and notes) of each upcoming appointment.
+
+- Personalized Profiles:
   
-      •	Profils individuels pour chaque animal, incluant des informations : nom, âge, race, besoins spécifiques et rendez-vous à venir.
-      •	Possibilité de créer des photos et de les associer aux profils.
-  
-    -	Conseils de Soins Quotidiens:
-      
-      •	Suggestions et conseils pour le soin quotidien des animaux, basés sur l'âge, la race et les besoins des animaux.
-     	
-    -	Gestion des Comptes:
-      
-      •	Système de création de compte pour les propriétaires, permettant une gestion sécurisée de leurs informations et celles de leurs animaux.
-      •	 Possibilité au propriétaire de modifier ses informations d’inscription et de supprimer son compte, après s’être inscrit et connecté.
-      •	Compte administrateur pour la gestion des utilisateurs et des données de l'application.
+    • Individual profiles for each pet, including information such as name, age, breed, specific needs, and upcoming appointments.
+    • Ability to create photos and associate them with profiles.
 
-# Technologies Utilisées
+- Daily Care Tips:
 
-  -	Front-end: Angular 17, Bootstrap 5, HTML, CSS, JavaScript
-  -	Back-end: Spring Boot 3.2.2
-  -	Base de données: MySQL
-  -	Outils: GitLab/GitHub, MySQL Workbench
-  -	Plugins : FullCalendar
-  
-# Mise en Route
+    • Suggestions and tips for daily pet care, based on the pet's age, breed, and needs.
 
-  1.	Prérequis:
-     
-    1)	Avoir installé MySQL Server et MySQL Workbench.
-    2)	Avoir Angular CLI, Git, Node.js et npm installés.
-  
-  2. Cloner le Dépôt:
+- Account Management:
 
-    1)	Initialiser un dossier Git avec la commande suivante :
+    • Account creation system for owners, allowing secure management of their information and that of their pets.
+    • Ability for the owner to modify their registration information and delete their account, after registering and logging in.
+    • Administrator account for managing users and application data.
+
+# Technologies Used
+
+- Front-end: Angular 17, Bootstrap 5, HTML, CSS, JavaScript
+- Back-end: Spring Boot 3.2.2
+- Database: MySQL
+- Tools: GitLab/GitHub, MySQL Workbench
+- Plugins: FullCalendar
     
-        git init
-        
-    2)	Naviguer dans le dossier initialisé et exécuter la commande suivante dans un dossier  :
-    
-        git clone https://github.com/DianaFarhat29/PetCare-Tracker.git
-    
-  3.	Ouvrir le Projet :
+# Getting Started
 
-    Ouvrez le projet dans un IDE supportant Java et Spring Boot, comme IntelliJ IDEA ou Eclipse.
+1. Prerequisites:
 
-  4.	Installer les Dépendances:
-     
-    1)	Naviguer dans le dossier PetCare-Tracker.
-    2)	Exécuter npm install.
-    3)	S’assurer que le projet est reconnu en tant que projet Maven (‘m’ de couleur bleue à gauche du dossier pom.xml) et que les dépendances de Maven ont été chargées.
-    4)	Naviguer dans le dossier angularFolder.
-    5)	Exécuter npm install.
-    
-  5.	Configuration de la Base de Données:
-    
-    1)	Ouvrir le fichier application.properties (situé dans :  PetCare-Tracker\src\main\resources).
-    2)	Ajuster le mot de passe de la connexion à la base de données sur MySql (connection string).
+    1) Have MySQL Server and MySQL Workbench installed.
+    2) Have Angular CLI, Git, Node.js, and npm installed.
 
-  6.	Lancer l'Application:
+2. Clone the Repository:
+
+    1) Initialize a Git folder with the following command:
+       git init
+    2) Navigate to the initialized folder and execute the following command in a folder:
+       git clone https://github.com/DianaFarhat29/PetCare-Tracker.git
    
-    1)	Ouvrir votre IDE (IntelliJ IDEA, Eclipse, etc.).
-    2)	Ouvrir le projet PetCare-Tracker.
-    3)	Lancer l’exécution du fichier main PetCareTrackerProjectApplication.java (situé dans PetCare-Tracker /src/main/java/org/petcare/tracker/project/PetCareTrackerProjectApplication.java)
-    4)	Naviguer au dossier angularFolder et exécuter la commande npm serve –open dans le terminal 
-    5)	Exécuter l'application.
-    6)	L'application devrait se lancer sur localhost:4200.
-  
-  7.	Utilisation de l'Application
-     
-    1)	Ouvrir un navigateur web et accéder à l'URL localhost:4200.
-    2)	Créer un compte pour commencer à utiliser l'application.
-    3)	Une fois connecté, vous pouvez profiter de toutes les fonctionnalités de l'application.
-    4)	Il est aussi possible de se connecter avec 3 comptes de démonstration (Deux propriétaires et un administrateur) dont les informations de connexions se trouvent dans le fichier main PetCareTrackerProjectApplication.java
+3. Open the Project:
 
+    Open the project in an IDE that supports Java and Spring Boot, such as IntelliJ IDEA or Eclipse.
+
+4. Install the Dependencies:
+
+    1) Navigate to the PetCare-Tracker folder.
+    2) Run npm install.
+    3) Ensure that the project is recognized as a Maven project (blue 'm' to the left of the pom.xml file) and that the Maven dependencies have been loaded.
+    4) Navigate to the angularFolder folder.
+    5) Run npm install.
+       
+5. Database Configuration:
+
+    1) Open the application.properties file (located in: PetCare-Tracker\src\main\resources).
+    2) Adjust the database connection password (connection string).
+  
+6. Run the Application:
+
+    1) Open your IDE (IntelliJ IDEA, Eclipse, etc.).
+    2) Open the PetCare-Tracker project.
+    3) Run the main PetCareTrackerProjectApplication.java file (located in PetCare-Tracker /src/main/java/org/petcare/tracker/project/PetCareTrackerProjectApplication.java)
+    4) Navigate to the angularFolder folder and run the command npm serve –open in the terminal.
+    5) Run the application.
+    6) The application should launch on localhost:4200.
+       
+7. Using the Application:
+
+    1) Open a web browser and navigate to the URL localhost:4200.
+    2) Create an account to start using the application.
+    3) Once logged in, you can enjoy all the features of the application.
+    4) It is also possible to connect with 3 demo accounts (Two owners and one administrator) whose login information can be found in the main PetCareTrackerProjectApplication.java file.
+   
 # Conclusion
 
-  Le projet PetCare Tracker est une solution complète et intuitive pour la gestion des soins des animaux de compagnie. L'application offre une variété de fonctionnalités pour aider les propriétaires à garder leurs animaux en bonne santé et heureux.
-
+The PetCare Tracker project is a complete and intuitive solution for pet care management. The application offers a variety of features to help owners keep their pets healthy and happy.
